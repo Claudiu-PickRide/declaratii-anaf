@@ -57,7 +57,7 @@ public class Main
     public static String _newLine = System.getProperty("line.separator");
     public static String _rootPath = null;
     public static String _libPath = null;
-    public static String _configPath = null;
+    public static String _configPath = "config";
     public static String _xmlFile = null;
     public static String _errFile = null;
     public static String _pdfFile = null;

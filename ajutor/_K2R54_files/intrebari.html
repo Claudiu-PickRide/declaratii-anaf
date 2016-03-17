@@ -1,0 +1,232 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+    <title>Intrebari frecvente</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <link href="stylesheet.css" rel="stylesheet" type="text/css"/>
+<link href="page_styles.css" rel="stylesheet" type="text/css"/>
+
+  
+
+
+<link href="calibreHtmlOutBasicCss.css" type="text/css" rel="stylesheet" />
+
+</head>
+<body>
+
+<div class="calibreMeta">
+  <div class="calibreMetaTitle">
+  
+  
+    
+    <h1>
+      <a href="../_K2R54.html">Dukintegrator ajutor
+</a>
+    </h1>
+    
+    
+  
+  </div>
+  <div class="calibreMetaAuthor">
+    Unknown
+
+  </div>
+</div>
+
+<div class="calibreMain">
+
+  <div class="calibreEbookContent">
+    
+      <div class="calibreEbNavTop">
+        
+          <a href="setari.html" class="calibreAPrev">previous page</a>
+        
+
+        
+      </div>
+    
+
+    
+<ol class="calibre6">
+<li class="calibre7"><strong class="calibre1"><em class="calibre20"><u class="calibre21">Informatii generale program:</u></em></strong></li>
+</ol>
+<p class="calibre3">I:         Cum pot depune XML-ul validat? Trebuie  sa-l import/ atasez in PDF-ul inteligent?<br class="calibre2"/>
+  R:        Declaratia Unica D112 consta dintr-un  PDF la care se atseaza un fisier XML. Programul genereaza automat PDF-ul  declaratiei si ataseaza XML-ul validat. De asemenea ofera si posibilitatea  semnarii digitale. Nu aveti nevoie de niciun alt program suplimentar.</p>
+<p class="calibre3">I:          De ce nu mi se genereaza (pentru  listare/vizualizare) si Anexele 1.1 si 1.2?<br class="calibre2"/>
+  R:        Pentru depunerea declaratiei D112 este  necesar doar PDF-ul cu Anexa 1, impreuna cu XML-ul atasat din care vor fi  preluate datele pe serverul central. Programul nu include in PDF anexele 1.1 si  1.2<br class="calibre2"/>
+<u class="calibre21">Pentru sanatate:</u> In Ordinul 130/351/2011 se specifica ce documente  sunt necesare pentru recuperarea concediilor medicale. Nu se cer anexele 1.1 si  1.2 din D112. Datele din aceasta anexa se regasesc in sistemul unic integrat.<br class="calibre2"/>
+<u class="calibre21">Pentru somaj:</u> In HG 113/09.02.2011, publicata in Monitorul  Oficial 133/22.02.2011, apar modificarile la Normele metodologice de aplicare a  Legii 76/2002  prin care se elimina  obligatia prezentarii declaratiei listate la AJOFM.</p>
+<p class="calibre3">I:         In denumirea firmei exista un &amp;. La  validarea xml-ului imi apare o eroare fatala de parsare.<br class="calibre2"/>
+  R:        In formatul xml exista "escape  characters": </p>
+<p class="calibre3">&amp;amp; pentru &amp; <br class="calibre2"/>
+  &amp;lt; pentru &lt; <br class="calibre2"/>
+  &amp;gt; pentru &gt; <br class="calibre2"/>
+  &amp;quot; pentru  " <br class="calibre2"/>
+  &amp;apos; pentru  '  </p>
+<p class="calibre3">Inlocuiti &amp; cu  &amp;amp; in XML. Daca deschideti fisierul, de exemplu intr-un browser de  internet, continutul apare corect si nu veti avea nici eroare la validare </p>
+<p class="calibre3">I:         Dorim sa se ofere posibilitatea de a  crea PDF-ul declaratiei si de a-l semna direct din linia de comanda, prin  folosirea de parametri<br class="calibre2"/>
+  R:        Incepand cu versiunea J1.5.0 se poate  valida declaratia si genera/ semna PDF-ul prin intermediul liniei de comanda.  Va rugam sa cititi fisierul Instructiuni.txt pentru modul de folosire. De  asemenea, sursele programului de generare PDF, semnare si interfata grafica au  fost publicate pe site-ul ANAF iar in cadrul lor exista clasa Integrator creata  special pentru a fi utilizata in aplicatiile dumneavoastra. Le puteti folosi  sub licenta AGPL (folosim iText care este sub AGPL) pentru a va crea  functionalitatile pe care le doriti. </p>
+<p class="calibre3">I:         Lansez aplicatia din linia de comanda  si primesc urmatoarea eroare: „linie comanda incompleta”<br class="calibre2"/>
+  R:        Incapand cu versiunea J1.5.0 va trebui  folosit noul format al liniei de comanda (documentat in fisierul  Instructiuni.txt). Eroarea indica faptul ca lipseste un parametru obligatoriu  din linia de comanda (cel mai probabil tipul declaratiei).</p>
+<p class="calibre3">I:         Pot valida/prelucra mai multe fisiere  XML o data ?<br class="calibre2"/>
+  R:        Da! Selectati folderul care contine  fisierele XML. Apasand butoanele corespunzatoare se vor prelucra toate  fisierele XML din folder.</p>
+<p class="calibre3">I:         Cat de rapid este programul?<br class="calibre2"/>
+  R:        Pe un calculator DualCore 2.4 Ghz, 4Gb  RAM,  JVM cu setari default, un fisier cu  date reale de 2000 asigurati a durat la validare 0.6 secunde. Crearea si  semnarea dureaza aproximativ inca o secunda fiecare.</p>
+<p class="calibre3">I:         Cand pornesc programul imi apare o  fereastra in care se verfica versiunea programului. <br class="calibre2"/>
+  R:        De la versiunea J1.2.2 s-a introdus facilitatea  de verficare automata (printr-o conectare prin http) daca au mai aparut  versiuni noi ale programului pe site-ul ANAF si posibilitatea de a le descarca.  Pentru a renunta la aceasta facilitate stergeti din fisierul de configurare  linia: urlVersiuni=http://static.anaf.ro/static/10/Anaf/declunica/versiuni.xml</p>
+<p class="calibre3">I:         La pornirea din linia de comanda, daca  numele folderului care contine dist/DUKIntegrator.jar are spatii apare eroarea:</p>
+<p class="calibre3">Exception in thread  "main" java.io.FileNotFoundException: c:\expert (The system cannot  find the file specified)<br class="calibre2"/>
+  at java.util.zip.ZipFile.open(Native  Method)<br class="calibre2"/>
+  at  java.util.zip.ZipFile.&lt;init&gt;(Unknown Source)<br class="calibre2"/>
+  at  java.util.jar.JarFile.&lt;init&gt;(Unknown Source)<br class="calibre2"/>
+  at java.util.jar.JarFile.&lt;init&gt;(Unknown  Source)<br class="calibre2"/>
+  R:        Incercati sa lansati explicit versiunea  de java dorita din linia de comanda, iar caile sa fie puse intre ghilimele:<br class="calibre2"/>
+  C:\Documents and  Settings\local&gt;"C:\Program Files\Java\jdk1.6.0_21\jre\bin\java.exe"  -jar "c:\expert w\dist\DUKIntegrator.jar"</p>
+<ol class="calibre6">
+<li class="calibre7"><strong class="calibre1"><em class="calibre20"><u class="calibre21">Erori la validare</u></em></strong></li>
+</ol>
+<p class="calibre3"><strong class="calibre1"><em class="calibre20"><u class="calibre21"> </u></em></strong></p>
+<p class="calibre3">I:         Am eroarea - eroare structura: tag  necunoscut (“frmMain”)<br class="calibre2"/>
+  R:        Ati folosit pentru validare, cel mai  probabil, fisierul XML rezultat in urma exportului (Document – Forms – Export)  din Pdf-ul intelligent. XML-ul declaratiei D112 este cel care se gaseste in  atasamentul PDF-ului inteligent.</p>
+<p class="calibre3">I:         In fisierul de erori imi apar  atentionari desi am completat corect datele<br class="calibre2"/>
+  R:        O declaratie care are numai atentionari  este considerata valida. <br class="calibre2"/>
+  Sunt atentionari si nu  erori si pentru faptul ca respectivele reguli se aplica in marea majoritate a  cazurilor dar exista si exceptii pentru care respectiva regula nu mai trebuie  respectata. Atentionarile doar atrag atentia ca este posibil sa nu se fi  completat corect.</p>
+<p class="calibre3"> </p>
+<p class="calibre3">I:         Calea/fisierul XML contin spatii;  mesajul de la parsare este:<br class="calibre2"/>
+  E: validari globale<br class="calibre2"/>
+  Eroare fatala de parsare: 'unknown protocol:  c'<br class="calibre2"/>
+  R:        versiunea jre 1.6 instalata contine un  bug. Solutie: instalare ultima  versiune jre 1.6 sau eliminati din denumirea fiserelor spatiile.</p>
+<p class="calibre3">I:         Obtin urmatorul mesaj de eroare:<br class="calibre2"/>
+  F: validari globale <br class="calibre2"/>
+  Eroare fatala de  parsare: "invalid byte 2 of 2 byte UTF-8 sequence" <br class="calibre2"/>
+  R:        Aceasta eroare apare din cauza unui  caracter (caractere) encodate gresit. De exemplu XML-ul este encodat UTF-8 si  exista caractere UTF-16. In acest caz respectivele caractere nu pot fi „citite”.<br class="calibre2"/>
+  Aceasta situatie este  intalnita de obicei la diacritice, dar mai poate apare si la caractere speciale  - de tipul: #,$, etc.<br class="calibre2"/>
+  Solutia:<br class="calibre2"/>
+  1. Encodarea corecta a  acestor caractere (editarea textului intr-un editor de text - Notepad, Wordpad,   etc. ar trebui sa rezolve problema).<br class="calibre2"/>
+  2. Renuntarea la  diacritricele respective (de exemplu in loc de Ţ sa fie T)</p>
+<p class="calibre3">I:         Obtin urmatorul mesaj de eroare:<br class="calibre2"/>
+  „ atributul mailFisc  prezent dar vid nepermis”<br class="calibre2"/>
+  R:        Ati introdus respectivul atribut in XML  sub forma mailFisc=”   ” sau mailFisc=””  . Solutie: introduceti o valoare corecta sau elimitati complet acest atribut  din XML.</p>
+<p class="calibre3">I:         Daca nu am erori la validarea cu soft-ul  J inseamna ca nu voi avea erori nici la validarea pe server?<br class="calibre2"/>
+  R:        Pentru validarea pe server se foloseste  ultima versiune de Validator care se distribuie si prin programul de asistenta  (soft J). Pe server insa se mai fac o serie de validari care nu pot fi facute  la nivel „local”: verificari cu nomenclatoare / registri ( existenta CUI,  pereche corecta sediu principal – sediu secundar, etc.) precum si: verficare sa  nu mai existe o declaratie initiala valida pentru aceasi perioada/ CUI,  verificare ca pentru o rectificativa sa existe o initiala valida, perioada de  raportare sa nu fie „in viitor” sau anterioara lui 01/2011, etc.</p>
+<ol class="calibre6">
+<li class="calibre7"><strong class="calibre1"><em class="calibre20"><u class="calibre21">Erori la semnare:</u></em></strong></li>
+</ol>
+<p class="calibre3"><strong class="calibre1"><em class="calibre20"><u class="calibre21"> </u></em></strong></p>
+<p class="calibre3">I:         Nu pot semna cu certificatul digital.  Imi apare o eroare (exceptie) la semnare.<br class="calibre2"/>
+  R:        Incercati urmatoarea solutie:</p>
+<ol start="1" type="1" class="calibre6">
+<li class="calibre7">Editati fisierul smartCard.cfg din folderul       config (de exemplu, daca aveti aladdin veti edita aladdin.cfg) si stergeti       '#'-ul din fata liniei 'algorithm=mscapi'.</li>
+<li class="calibre7">Salvati modificarea.</li>
+<li class="calibre7">Reincercati semnarea.</li>
+</ol>
+<p class="calibre3">I:         Nu pot semna cu certificatul digital.  Nu-mi apar tipurile de certificate digitale.<br class="calibre2"/>
+  R:        Verificati existenta, in acelasi  director cu DUKIntegrator.jar sau conform comenzii cu “-c” a folderului config,  care trebuie sa contina fisierele de configurare .cfg.</p>
+<p class="calibre3">I:         Nu pot semna cu certificatul digital.  Imi apare o eroare (exceptie) la semnare.<br class="calibre2"/>
+  R:        Verificati ca in fisierul .cfg  corespunzator dispozitivului cu care semnati este inscrisa calea corecta catre  fisierul .dll, reprezentand driverul necesar accesarii dispozitivului de pe  calculatorul local. Aceasta cale poate fi editata pentru a arata corect locatia  existenta.</p>
+<p class="calibre3">I:         Nu pot semna cu certificat digital pe  Windows (XP, Vista, 7) pe 64 biti.<br class="calibre2"/>
+  R:        In acest moment, pe Windows 64 biti Java  nu asigura suport deplin pentru biblioteca SunPKCS11.jar (care este providerul  de securitate care trebuie folosit pentru semnarea cu certificatele digitale  calificate). Pe celelalte sisteme de operare pe 64 biti nu sunt probleme in Java  cu aceasta biblioteca. <br class="calibre2"/>
+  Solutia: </p>
+<ol start="4" type="1" class="calibre6">
+<li class="calibre7">Folositi versiunea JVM pt. 32 de biti.</li>
+<li class="calibre7">Editati fisierul smartCard.cfg din folderul       config (de exemplu, daca aveti aladdin veti edita aladdin.cfg) si stergeti       '#'-ul din fata liniei 'algorithm=mscapi'.</li>
+<li class="calibre7">Salvati modificarea.</li>
+<li class="calibre7">Reincercati semnarea.</li>
+</ol>
+<p class="calibre3">I:         La semnare cu SmartCardul obtineti  eroarea: "eroare acces driver: &lt;cale\driver.dll&gt;".<br class="calibre2"/>
+  R:        Corectati parametrul library din  fisierul dist\config\SMART_CARD.cfg astfel incat sa indice calea reala pe  calculatorul dumneavoastra catre driverul corespunzator SMART_CARD-ului folosit</p>
+<p class="calibre3">I:         La semnare se obtine eroarea "java.security.ProviderException:  Error parsing configuration".<br class="calibre2"/>
+  R:        Calea catre driverul SmartCardului (care  se afla inscrisa in fisierul .cfg corespunzator acestuia) contine unul din  urmatoarele caractere: "~()". Solutie: Copiati continutul intregului  folder in alta locatie si modificati corespunzator calea din fisierul .cfg.  (vezi si http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=6581254)</p>
+<p class="calibre3">I:         La semnare cu SmartCardul obtineti  eroarea: "java.security.KeyStoreException: KeyStore instantiation failed".<br class="calibre2"/>
+  R:        Probabil nu aveti nici un SmartCard  conectat sau PIN-ul nu este corect</p>
+<p class="calibre3"> </p>
+<p class="calibre3">I:         La semnare cu SmartCardul Schlumberger,  aveti un PIN mai lung de 8 caractere si obtineti eroarea: "java.security.KeyStoreException:  KeyStore instantiation failed".<br class="calibre2"/>
+  R:        Incercati sa introduceti primele 8  caractere ale PIN-ului</p>
+<p class="calibre3">I:         La semnare obtineti eroarea: "java.security.ProviderException:  Initialization failed".<br class="calibre2"/>
+  R:        Verificati daca aveti conectate la  statie si alte SmartCarduri, in plus fata de cel cu care intentionati sa  semnati D112 (de exemplu aveti in plus un SmartCard de la o banca). Pt. moment  solutia recomandata este sa deconectati toate celelalte SmartCarduri cu  exceptia celui folosit pt. D112 si sa reluati procesul de semnare. Incercati sa  folositi optiunea "*autoDetect"</p>
+<p class="calibre3">I:         Detin un certificat reinoit. La semnare  imi apare un mesaj ca certificatul este expirat.<br class="calibre2"/>
+  R:        Daca pentru reinoirea certificatului se  foloseste acelasi alias, java va accesa aleatoriu certificatele care sunt sun  acelasi alias. In acest caz incercati sa mai semnati o data (apasati din nou  butonul de semnare). De la versiunea J1.4.0 aplicatia face mai multe incercari  de semnare – probabilitatea de a avea aceasta problema este foarte mica.</p>
+<p class="calibre3">Va multumim pentru  observatii transmise care ne-au ajutat sa corectam bug-uri/ sa imbunatatim  aplicatia. Puteti adresa in continuare intrebari/ observatii/ sugestii/ erori  intalnite pe adresa de mail<strong class="calibre1">: <a href="mailto:admin.portal@mfinante.ro">admin.portal@mfinante.ro</a>, </strong>cu rugamintea de a inscrie in subiectul mesajului „soft_J”. </p>
+
+
+
+  </div>
+
+  
+  <div class="calibreToc">
+    <h2><a href="../_K2R54.html"> Table of contents</a></h2>
+     <div>
+  <ul>
+    <li>
+      <a href="pornire.html">1. Lansare DUKIntegrator</a>
+    </li>
+    <li>
+      <a href=".">2. Instalare/ Updatare declaratii</a>
+      <ul>
+        <li>
+          <a href="instalareA.html">2.1 Instalare/ Updatare automata a declaratiilor</a>
+        </li>
+        <li>
+          <a href="instalareM.html">2.2 Instalare / Updatare manuala a declaratiilor</a>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <a href="dezinstalare.html">3. Dezinstalare declaratii</a>
+    </li>
+    <li>
+      <a href=".">4. Validare XML</a>
+      <ul>
+        <li>
+          <a href="validareXML.html">4.1.Validare XML</a>
+        </li>
+        <li>
+          <a href="validareXMLP.html">4.2.Validare XML + Creare PDF</a>
+        </li>
+        <li>
+          <a href="validareXMLPS.html">4.3.Validare XML + Creare PDF + Semnare PDF</a>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <a href=".">5. Validare PDF</a>
+      <ul>
+        <li>
+          <a href="validarePDF.html">5.1.Validare PDF</a>
+        </li>
+        <li>
+          <a href="validarePDFP.html">5.2.Validare PDF + Re-creare PDF</a>
+        </li>
+        <li>
+          <a href="ValidarePDFPS.html">5.3.Validare PDF + Re-creare PDF + Semnare PDF</a>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <a href="setari.html">6. Setari</a>
+    </li>
+    <li>
+      <a href="intrebari.html">7. Intrebari frecvente</a>
+    </li>
+  </ul>
+</div>
+
+
+  </div>
+  
+
+  <div class="calibreEbNav">
+    
+      <a href="setari.html" class="calibreAPrev">previous page</a>
+    
+
+    <a href="../_K2R54.html" class="calibreAHome"> start</a>
+
+    
+  </div>
+
+</div>
+
+</body>
+</html>

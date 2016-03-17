@@ -1,0 +1,174 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+    <title>Setari</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <link href="stylesheet.css" rel="stylesheet" type="text/css"/>
+<link href="page_styles.css" rel="stylesheet" type="text/css"/>
+
+  
+
+
+<link href="calibreHtmlOutBasicCss.css" type="text/css" rel="stylesheet" />
+
+</head>
+<body>
+
+<div class="calibreMeta">
+  <div class="calibreMetaTitle">
+  
+  
+    
+    <h1>
+      <a href="../_K2R54.html">Dukintegrator ajutor
+</a>
+    </h1>
+    
+    
+  
+  </div>
+  <div class="calibreMetaAuthor">
+    Unknown
+
+  </div>
+</div>
+
+<div class="calibreMain">
+
+  <div class="calibreEbookContent">
+    
+      <div class="calibreEbNavTop">
+        
+          <a href="ValidarePDFPS.html" class="calibreAPrev">previous page</a>
+        
+
+        
+          <a href="intrebari.html" class="calibreANext"> next page</a>
+        
+      </div>
+    
+
+    
+                Toate modificarile prezentate mai jos se fac in fisierul config.properties din folderul config. Acest fisier poate fi editat
+        cu orice editor de text (de exemplu Notepad)<br class="calibre2"/><br class="calibre2"/>
+          1. Controlul conectarii la Internet pentru Updatarea automata<br class="calibre2"/><br class="calibre2"/>
+
+             1.1 Setarea URL-ului pentru verificarea ultimelor versiuni<br class="calibre2"/>
+        Parametru = urlVersiuni<br class="calibre2"/>
+        Valoare =http\://static.anaf.ro/static/10/Anaf/update1/versiuni.xml<br class="calibre2"/>
+        Acest parametru poate fi sters sau comentat (de exemplu adaugand un "X" in fata liniei respective). In acest caz la pornirea programului DUKIntegrator nu se va mai incerca verficarea si descarcarea ultimelor versiuni de declaratii<br class="calibre2"/><br class="calibre2"/>
+             1.2 Setarea proxy-ului<br class="calibre2"/>
+        Daca conexiunea dumneavoastra Internet se face prin intermediul unui proxy server va trebui sa adaugati linia:<br class="calibre2"/>
+        proxy=auto<br class="calibre2"/>
+        pentru a incerca o detectare automata a acestuia sau liniile:<br class="calibre2"/>
+        proxyIP=xxx.yyy.zzz.www (adresa DNS)<br class="calibre2"/>
+proxyPort=n<br class="calibre2"/>
+
+pentru indicarea explicita a IP-ului sau adresei DNS/portului (prin lipsa 80) folosit de proxy server<br class="calibre2"/>
+
+Exemplu:<br class="calibre2"/>
+
+proxyIP=111.111.111.111<br class="calibre2"/>
+proxyPort=80<br class="calibre2"/><br class="calibre2"/>
+     1.3 Ignorarea declaratiilor noi (neinstalate)<br class="calibre2"/>
+Adaugati parametrul:<br class="calibre2"/>
+	ignoraDeclaratiiNoi=D<br class="calibre2"/><br class="calibre2"/><br class="calibre2"/>
+
+      2. Setare tip implicit declaratie<br class="calibre2"/>
+ ATENTIE ! Aceasta setare se modifica automat la fiecare inchidere a programului cu ultima valoare selectata de utilizator !<br class="calibre2"/>
+ Se modifica parametrul tipDeclaratie, de exemplu:<br class="calibre2"/>
+ tipDeclaratie=D300<br class="calibre2"/><br class="calibre2"/>
+
+       3. Setare tip implicit smart card<br class="calibre2"/>
+ ATENTIE ! Aceasta setare se modifica automat la fiecare inchidere a programului cu ultima valoare selectata de utilizator !<br class="calibre2"/>
+ Se modifica parametrul defSmartCard, de exemplu:<br class="calibre2"/>
+ defSmartCard=aladdin<br class="calibre2"/><br class="calibre2"/>
+       4. Setare folder care se deschide dupa apoasarea butonului Browse<br class="calibre2"/>
+ ATENTIE ! Aceasta setare se modifica automat la fiecare inchidere a programului cu ultima valoare selectata de utilizator !<br class="calibre2"/>
+ Se modifica parametrul defFolder, de exemplu:<br class="calibre2"/>
+ defFolder=C:/declaratii/xml<br class="calibre2"/><br class="calibre2"/>
+
+
+
+  </div>
+
+  
+  <div class="calibreToc">
+    <h2><a href="../_K2R54.html"> Table of contents</a></h2>
+     <div>
+  <ul>
+    <li>
+      <a href="pornire.html">1. Lansare DUKIntegrator</a>
+    </li>
+    <li>
+      <a href=".">2. Instalare/ Updatare declaratii</a>
+      <ul>
+        <li>
+          <a href="instalareA.html">2.1 Instalare/ Updatare automata a declaratiilor</a>
+        </li>
+        <li>
+          <a href="instalareM.html">2.2 Instalare / Updatare manuala a declaratiilor</a>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <a href="dezinstalare.html">3. Dezinstalare declaratii</a>
+    </li>
+    <li>
+      <a href=".">4. Validare XML</a>
+      <ul>
+        <li>
+          <a href="validareXML.html">4.1.Validare XML</a>
+        </li>
+        <li>
+          <a href="validareXMLP.html">4.2.Validare XML + Creare PDF</a>
+        </li>
+        <li>
+          <a href="validareXMLPS.html">4.3.Validare XML + Creare PDF + Semnare PDF</a>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <a href=".">5. Validare PDF</a>
+      <ul>
+        <li>
+          <a href="validarePDF.html">5.1.Validare PDF</a>
+        </li>
+        <li>
+          <a href="validarePDFP.html">5.2.Validare PDF + Re-creare PDF</a>
+        </li>
+        <li>
+          <a href="ValidarePDFPS.html">5.3.Validare PDF + Re-creare PDF + Semnare PDF</a>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <a href="setari.html">6. Setari</a>
+    </li>
+    <li>
+      <a href="intrebari.html">7. Intrebari frecvente</a>
+    </li>
+  </ul>
+</div>
+
+
+  </div>
+  
+
+  <div class="calibreEbNav">
+    
+      <a href="ValidarePDFPS.html" class="calibreAPrev">previous page</a>
+    
+
+    <a href="../_K2R54.html" class="calibreAHome"> start</a>
+
+    
+      <a href="intrebari.html" class="calibreANext"> next page</a>
+    
+  </div>
+
+</div>
+
+</body>
+</html>

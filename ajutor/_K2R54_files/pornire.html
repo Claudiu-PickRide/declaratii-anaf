@@ -1,0 +1,187 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+
+    <title>Lansare DUKIntegrator</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+  <link href="stylesheet.css" rel="stylesheet" type="text/css"/>
+<link href="page_styles.css" rel="stylesheet" type="text/css"/>
+
+  
+
+
+<link href="calibreHtmlOutBasicCss.css" type="text/css" rel="stylesheet" />
+
+</head>
+<body>
+
+<div class="calibreMeta">
+  <div class="calibreMetaTitle">
+  
+  
+    
+    <h1>
+      <a href="../_K2R54.html">Dukintegrator ajutor
+</a>
+    </h1>
+    
+    
+  
+  </div>
+  <div class="calibreMetaAuthor">
+    Unknown
+
+  </div>
+</div>
+
+<div class="calibreMain">
+
+  <div class="calibreEbookContent">
+    
+      <div class="calibreEbNavTop">
+        
+          <a href="../_K2R54.html" class="calibreAPrev">previous page</a>
+        
+
+        
+          <a href="instalareA.html" class="calibreANext"> next page</a>
+        
+      </div>
+    
+
+    
+<b class="calibre1">1. Cerinte prelabile</b>
+
+Pentru rularea programului este necesar sa aveti instalat jre 1.6 sau 1.7 (java runtime environment 1.6 sau 1.7).<br class="calibre2"/>
+Programul functioneaza atat pe platforme Windows cat si Linux/Unix. Pe sistemele Windows pe 64 biti se poate semna folosind o platforma java pe 32 biti (driverele smartCard pot fi pe 32 sau 64 biti).<br class="calibre2"/><br class="calibre2"/>
+<b class="calibre1">2. Mod de lansare (Windows)</b><br class="calibre2"/>
+
+Se dezarhiveaza fisierul dist.zip intr-un folder (de preferinta intr-o cale simpla, a se evita dezarhivarea pe desktop sau in locatii lungi si cu caractere speciale - este posibil sa apara erori la identificarea automata a locatiei)<br class="calibre2"/>
+Pentru a lansa programul, dati dublu-click pe fisierul DUKIntegrator.jar. <br class="calibre2"/>
+In cazul in care se inceraca deschiderea fisierului cu un alt program (de exemplu o aplicatie de arhivare) va trebui sa setati in Windows ca fierele cu extensia .jar sa se deschida cu java.exe (care se gaseste la o cale de forma c:/Program File/ Java/bin/java.exe)<br class="calibre2"/><br class="calibre2"/>
+<b class="calibre1">3. Mode de lansare cu linie de comanda</b><br class="calibre2"/>
+
+Programul opereaza in 2 moduri distincte (in comenzile de lansare parantezele drepte ("[", "]") indica parametri optionali):<br class="calibre2"/>
+<b class="calibre1">A. modul cu interfata grafica.</b> Se lanseaza folosind comanda:<br class="calibre2"/>
+java -version:1.6 -jar "<cale>\dist\DUKIntegrator.jar" [-c caleConfig] [-d] [fisierXML]<br class="calibre2"/>
+      - caleConfig trebuie indicata numai in situatia (putin probabila) in care programul nu poate detecta singur calea folderului "config", care contine fisierele de configurare pt. semnarea documentelor folosind smartCarduri.<br class="calibre2"/>
+
+Acest folder, livrat odata cu kitul, se gaseste in folderul "dist".- parametrul -d trebuie indicat daca NU se doreste lansarea facilitatii "Download", care permite actualizarea automata a ultimelor versiuni de pe site-ul ANAF (acelasi efect se obtine comentand parametrul "urlVersiuni" din fisierul config/config.properties)- parametrul fisierXML indica un fisier XML care apare selectat in interfata grafica la pornirea programului.Atentie! Parametrul -c se poate folosi numai impreuna cu pararametrul -d.<br class="calibre2"/>
+<b class="calibre1">B. modul linie de comanda.</b><br class="calibre2"/>
+Acest mod permite aceleasi operatii ca modul A. Se pot folosi comenzile:- pt. validare declaratie:<br class="calibre2"/>
+java -version:1.6 -jar "</cale><cale>\dist\DUKIntegrator.jar" [-c caleConfig] -v tipDeclaratie fisierXML [fisierRezultat] [optiuneValidare]<br class="calibre2"/>
+    - pt. validare declaratie + creare fisier PDF:<br class="calibre2"/>
+java -version:1.6 -jar "</cale><cale>\dist\DUKIntegrator.jar" [-c caleConfig] -p tipDeclaratie fisierXML [fisierRezultat] [optiuneValidare] [fisierZIP] [fisierPDF]<br class="calibre2"/>
+    - pt. validare declaratie + creare fisier PDF semnat electronic:<br class="calibre2"/>
+java -version:1.6 -jar "</cale><cale>\dist\DUKIntegrator.jar" [-c caleConfig] -s tipDeclaratie fisierXML [fisierRezultat] [optiuneValidare] [fisierZIP] [fisierPDF] pinSmartCard smartCard [selectorCertificat]<br class="calibre2"/>
+    unde:<br class="calibre2"/>
+- caleConfig trebuie indicata numai in situatia (putin probabila) in care programul nu poate detecta singur calea folderului "config" si se doreste semnarea fisierului PDF rezultat (optiunea -s) folosind smartCarduri<br class="calibre2"/>
+- tipDeclaratie indica numele declaratiei cuprinse in fisierul XML de validat (ex: "D112")<br class="calibre2"/>
+- fisierXML este chiar declaratia de prelucrat<br class="calibre2"/>
+- fisierRezultat va contine erorile si atentionarile obtinute in urma validarii (optiunea -v) sau "ok" daca nu exista erori/atentionari de validare (optiunea -v) sau nu exista erori de validare si crearea PDF/semnarea a decurs corect (optiunile -p/-s); daca nu exista erori la validare dar exista erori la creare/semnare PDF, fisierul de erori va contine aceste ultime erori. Prin lipsa "<fisierxml>.err.txt".<br class="calibre2"/>
+- optiuneValidare indica validatoarelor unor declaratii (de exemplu D112) o optiune de validare. Prin lipsa 0. In cazul D112 optiunile pot fi:<br class="calibre2"/>
+- 0 - angajatori uzuali, care depun D112 la ANAF<br class="calibre2"/>
+- 1 - angajatori unitati speciale care depun D112 la ANAF<br class="calibre2"/>
+- 2 - angajatori unitati speciale care nu depun D112 la ANAF<br class="calibre2"/>
+- fiserZIP - numele fiserului ZIP de atasat prin optiunile -p/-s. Prin lipsa "</fisierxml><fisierxml fara="fara" extensia="extensia">.zip".<br class="calibre2"/>
+IMPORTANT: la declaratiile fara ZIP atasat acest parametru trebuie sa fie 0.<br class="calibre2"/>
+- fiserPDF - numele fiserului PDF creat prin optiunile -p/-s. Prin lipsa "</fisierxml><fisierxml fara="fara" extensia="extensia">.pdf".<br class="calibre2"/>
+- pinSmartCard - pinul folosit la semnarea cu smartCard<br class="calibre2"/>
+- smartCard - tipul smartCard-ului folosit la semnarea digitala a fisierului PDF (ex: "aladdin"). Trebuie sa existe un fisier <caleconfig>/<smartcard>.cfg care contine informatii de configurare a smartCardului<br class="calibre2"/>
+- selectorCertificat - este numarul de ordine pe smartCard (incepand cu 0) al certificatului cu care se doreste semnarea, in cazul unui smartCard care contine mai multe certificate digitale. Prin lipsa 0 (primul certificat de pe smartCard).Parametri optionali (cu exceptia lui -c) care nu se doresc a fi introdusi expres, dar dupa care urmeaza alti parametri vor trebui indicati prin "$", pt. a li se atribui valoarea prin lipsa corespunzatoare.<br class="calibre2"/><br class="calibre2"/>
+
+Exemple:<br class="calibre2"/>
+
+java -version:1.6 -jar "C:\dist\DUKIntegrator.jar" -v D112 C:/D112.xml<br class="calibre2"/>
+java -version:1.6 -jar "C:\dist\DUKIntegrator.jar" -v D112 C:/D112.xml $ 1<br class="calibre2"/>
+java -version:1.6 -jar "C:\dist\DUKIntegrator.jar" -c C:\dist\config -v D112 C:/D112.xml C:/erori.txt 1<br class="calibre2"/>
+java -version:1.6 -jar "C:\dist\DUKIntegrator.jar" -p D112 C:/D112.xml<br class="calibre2"/>
+java -version:1.6 -jar "C:\dist\DUKIntegrator.jar" -p D112 C:/D112.xml $ 0 0 C:\declaratie.pdf<br class="calibre2"/>
+java -version:1.6 -jar "C:\dist\DUKIntegrator.jar" -s D112 C:/D112.xml $ 0 0 $ 1234 aladdin<br class="calibre2"/>
+java -version:1.6 -jar "C:\dist\DUKIntegrator.jar" -c C:\dist\config -s D112 C:/D112.xml C:/erori.txt 0 0 C:\declaratie.pdf 1234 aladdin 1<br class="calibre2"/>
+
+Observatie: DUKIntegrator.jar contine acum o clasa Integrator care poate fi folosita de dezvoltatori in aplicatii. Clasa contine comentarii de utilizare la toate functiile, iar in clasa Main se poate gasi secventa care foloseste un obiect Integrator pt. realizarea modului B descris mai sus.<br class="calibre2"/>
+</smartcard></caleconfig></fisierxml></cale>
+
+
+  </div>
+
+  
+  <div class="calibreToc">
+    <h2><a href="../_K2R54.html"> Table of contents</a></h2>
+     <div>
+  <ul>
+    <li>
+      <a href="pornire.html">1. Lansare DUKIntegrator</a>
+    </li>
+    <li>
+      <a href=".">2. Instalare/ Updatare declaratii</a>
+      <ul>
+        <li>
+          <a href="instalareA.html">2.1 Instalare/ Updatare automata a declaratiilor</a>
+        </li>
+        <li>
+          <a href="instalareM.html">2.2 Instalare / Updatare manuala a declaratiilor</a>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <a href="dezinstalare.html">3. Dezinstalare declaratii</a>
+    </li>
+    <li>
+      <a href=".">4. Validare XML</a>
+      <ul>
+        <li>
+          <a href="validareXML.html">4.1.Validare XML</a>
+        </li>
+        <li>
+          <a href="validareXMLP.html">4.2.Validare XML + Creare PDF</a>
+        </li>
+        <li>
+          <a href="validareXMLPS.html">4.3.Validare XML + Creare PDF + Semnare PDF</a>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <a href=".">5. Validare PDF</a>
+      <ul>
+        <li>
+          <a href="validarePDF.html">5.1.Validare PDF</a>
+        </li>
+        <li>
+          <a href="validarePDFP.html">5.2.Validare PDF + Re-creare PDF</a>
+        </li>
+        <li>
+          <a href="ValidarePDFPS.html">5.3.Validare PDF + Re-creare PDF + Semnare PDF</a>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <a href="setari.html">6. Setari</a>
+    </li>
+    <li>
+      <a href="intrebari.html">7. Intrebari frecvente</a>
+    </li>
+  </ul>
+</div>
+
+
+  </div>
+  
+
+  <div class="calibreEbNav">
+    
+      <a href="../_K2R54.html" class="calibreAPrev">previous page</a>
+    
+
+    <a href="../_K2R54.html" class="calibreAHome"> start</a>
+
+    
+      <a href="instalareA.html" class="calibreANext"> next page</a>
+    
+  </div>
+
+</div>
+
+</body>
+</html>

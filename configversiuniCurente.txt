@@ -1,0 +1,3 @@
+Declaratie;Versiune
+D106;100
+D112;100

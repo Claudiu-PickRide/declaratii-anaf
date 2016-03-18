@@ -24,8 +24,7 @@ public class ValidateWebService {
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
     public String available(JSONObject input) {
-        String xml = org.json.XML.toString(input);
+        String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + org.json.JSONML.toString(input);
         return xml;
     }
-
 }

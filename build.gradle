@@ -18,7 +18,7 @@ repositories {
     jcenter()
 
     flatDir {
-        dirs('lib', '.')
+        dirs('lib', '.', 'validatoare')
     }
 }
 
@@ -37,17 +37,9 @@ buildscript {
 // In this section you declare the dependencies for your production and test code
 dependencies {
     // The production code uses the SLF4J logging API at compile time
-    compile name: 'D112Pdf'
-    compile name: 'D112Validator'
-    compile name: 'DecPdf'
-    compile name: 'DecValidation'
-    compile name: 'Validator'
-    compile name: 'bcmail-jdk15-145'
-    compile name: 'bcprov-jdk15-145'
-    compile name: 'iText-5.0.4'
     compile name: 'Download'
-    compile name: 'D106Pdf'
-    compile name: 'D106Validator'
+
+    compile fileTree(dir: 'lib')
 
     compile 'org.eclipse.jetty:jetty-server:9.3.8.v20160314'
     compile 'org.eclipse.jetty:jetty-servlet:9.3.8.v20160314'
@@ -67,9 +59,57 @@ sourceSets {
     main {
         java {
             srcDir 'src'
+            srcDir 'rest'
         }
         resources {
             srcDir 'dist/lib'
         }
+    }
+}
+
+task updateValidation {
+    doFirst {
+
+        def versionDictionary = [:]
+
+        def configFile = new File('configversiuniCurente.txt')
+
+        configFile.eachLine { line, number ->
+
+            if(number == 1) return
+
+            def (declaratie, versiuneJ, versiuneP) = line.tokenize(';')
+
+            versionDictionary[declaratie]= [
+                versiuneJ: versiuneJ,
+                versiuneP: versiuneP
+            ]
+        }
+
+        def versiuni = new XmlSlurper().parse('http://static.anaf.ro/static/10/Anaf/update1/versiuni.xml')
+
+        versiuni.declaratii.childNodes().each({
+            def name = it.name()
+            def library = it.children().inject([:], { acc, value ->
+
+                acc[value.name()] = value.text()
+                acc
+
+            })
+            ant.get(src: library.JURL, dest: 'lib')
+            ant.get(src: library.PURL, dest: 'lib')
+
+//            println library.JURL
+//            println library.PURL
+
+            versionDictionary[name] = library
+        })
+
+        configFile.write  "Declaratie;VersiuneJ;VersiuneP\n"
+
+        versionDictionary.each { key, value ->
+            configFile << "${key};${value.versiuneJ};${value.versiuneJ}\n"
+        }
+
     }
 }

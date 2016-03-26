@@ -25,7 +25,7 @@ Proiectul foloseste gradle ca mecanism de build.
 
 ##Update al librariilor de pe site-ul ANAF
 
-    ./gradlew -q updateValidation
+    ./gradlew -q updateFromANAF
     git add ./lib configversiuniCurente.txt
     git commit -m "Update librarii validare"
 

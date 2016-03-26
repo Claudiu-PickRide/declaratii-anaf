@@ -17,9 +17,6 @@ repositories {
     // You can declare any Maven/Ivy/file repository here.
     jcenter()
 
-    flatDir {
-        dirs('lib', '.', 'validatoare')
-    }
 }
 
 buildscript {
@@ -56,33 +53,25 @@ dependencies {
 sourceSets {
     main {
         java {
-            srcDir 'src'
-            srcDir 'rest'
-        }
-        resources {
-            srcDir 'dist/lib'
+            srcDir 'DUKIntegrator/src'
         }
     }
 }
 
-task updateValidation {
+task updateFromANAF {
     doFirst {
 
+        //Download an unpack sources
+        ant.get(src: 'http://static.anaf.ro/static/10/Anaf/Declaratii_R/AplicatiiDec/src_20140505.zip', dest: 'DUKIntegrator/src.zip')
+        ant.unzip(src: 'DUKIntegrator/src.zip', dest: 'DUKIntegrator')
+
+        delete('DUKIntegrator/src.zip')
+
+        return
+        //Download libraries
         def versionDictionary = [:]
 
         def configFile = new File('configversiuniCurente.txt')
-
-        configFile.eachLine { line, number ->
-
-            if(number == 1) return
-
-            def (declaratie, versiuneJ, versiuneP) = line.tokenize(';')
-
-            versionDictionary[declaratie]= [
-                versiuneJ: versiuneJ,
-                versiuneP: versiuneP
-            ]
-        }
 
         def versiuni = new XmlSlurper().parse('http://static.anaf.ro/static/10/Anaf/update1/versiuni.xml')
 

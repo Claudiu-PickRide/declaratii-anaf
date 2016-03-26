@@ -50,14 +50,14 @@ public class Main
     //  j = versiunea de compatibilitate intre interfata dec.Validation si jar-urile Validator
     //  p = versiunea de compatibilitate intre interfata dec.Pdf si jar-urile DxxxPdf
     public static final String _version = "1.2.13.3.3";
-//    _mode = 0 - UI
+    //_mode = 0 - UI
     //_mode = 1 - batch
     public static final String _CURRENT_VERSIONS = "versiuniCurente.txt";
     public static int _mode = 0;
     public static String _newLine = System.getProperty("line.separator");
     public static String _rootPath = null;
     public static String _libPath = null;
-    public static String _configPath = "config";
+    public static String _configPath = null;
     public static String _xmlFile = null;
     public static String _errFile = null;
     public static String _pdfFile = null;

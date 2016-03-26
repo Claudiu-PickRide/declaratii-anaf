@@ -6,7 +6,7 @@ Proiectul este menținut de [Incremental Community](http://incrementalcommunity.
 
 #Ce face acest soft ?
 
-Validează informațiile necesare pentru declarații și dacă sunt valide creează pdf-ul corespondent cu datele deja completate. Nu poate semna fișierele (mai multe detalii [aici]())
+Validează informațiile necesare pentru declarații și dacă sunt valide creează pdf-ul corespondent cu datele deja completate. Nu poate semna fișierele (mai multe detalii [aici](http://maisimplu.gov.ro/2016/03/21/obtinereafolosirea-unei-semnaturi-digitale/))
 
 #Sursele
 

@@ -37,8 +37,6 @@ buildscript {
 // In this section you declare the dependencies for your production and test code
 dependencies {
     // The production code uses the SLF4J logging API at compile time
-    compile name: 'Download'
-
     compile fileTree(dir: 'lib')
 
     compile 'org.eclipse.jetty:jetty-server:9.3.8.v20160314'
@@ -88,21 +86,51 @@ task updateValidation {
 
         def versiuni = new XmlSlurper().parse('http://static.anaf.ro/static/10/Anaf/update1/versiuni.xml')
 
+        def allUrls = []
+
+        //Itext and dependencies
+        versiuni.integrator.iJars.childNodes().each({
+            allUrls.add(it.text())
+        })
+
+        //Validator and dependencies
+        versiuni.integrator.sJars.childNodes().each({
+            allUrls.add(it.text())
+        })
+
+        //DUK and dependencies
+        versiuni.integrator.zJars.childNodes().each({
+            allUrls.add(it.text())
+        })
+
+        //Download and dependencies
+        versiuni.integrator.dJars.childNodes().each({
+            allUrls.add(it.text())
+        })
+
+
+        //Get declaratii URL's
         versiuni.declaratii.childNodes().each({
             def name = it.name()
+
+            //Flatten library XML
             def library = it.children().inject([:], { acc, value ->
 
                 acc[value.name()] = value.text()
                 acc
 
             })
-            ant.get(src: library.JURL, dest: 'lib')
-            ant.get(src: library.PURL, dest: 'lib')
 
-//            println library.JURL
-//            println library.PURL
+            allUrls.add(library.JURL)
+            allUrls.add(library.PURL)
 
             versionDictionary[name] = library
+        })
+
+        //Download all url's
+        allUrls.each({
+            println it
+            ant.get(src: it, dest: 'lib')
         })
 
         configFile.write  "Declaratie;VersiuneJ;VersiuneP\n"

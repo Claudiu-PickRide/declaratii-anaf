@@ -68,7 +68,6 @@ task updateFromANAF {
 
         delete('DUKIntegrator/src.zip')
 
-        return
         //Download libraries
         def versionDictionary = [:]
 

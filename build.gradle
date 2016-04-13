@@ -10,7 +10,8 @@ buildscript {
 }
 
 plugins {
-  id 'java'
+    id 'java'
+    id 'application'
 }
 
 repositories {
@@ -39,6 +40,30 @@ sourceSets {
         }
     }
 }
+
+mainClassName = "ro.incremental.anaf.declaratii.JobQueueServer"
+
+distTar {
+    compression = Compression.GZIP
+}
+
+distributions {
+    main {
+        contents {
+            from('config') {
+                into "config"
+            }
+
+            from('examples') {
+                into 'examples'
+            }
+            from('ajutor') {
+                into 'ajutor'
+            }
+        }
+    }
+}
+
 
 task updateFromANAF {
     doFirst {
@@ -79,7 +104,6 @@ task updateFromANAF {
             allUrls.add(it.text())
         })
 
-
         //Get declaratii URL's
         versiuni.declaratii.childNodes().each({
             def name = it.name()
@@ -104,7 +128,7 @@ task updateFromANAF {
             ant.get(src: it, dest: 'lib')
         })
 
-        configFile.write  "Declaratie;VersiuneJ;VersiuneP\n"
+        configFile.write "Declaratie;VersiuneJ;VersiuneP\n"
 
         versionDictionary.each { key, value ->
             configFile << "${key};${value.versiuneJ};${value.versiuneJ}\n"

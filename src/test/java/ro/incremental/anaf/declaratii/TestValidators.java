@@ -1,5 +1,8 @@
 package ro.incremental.anaf.declaratii;
 
+import dec.Info;
+import dec.LogTrace;
+import dec.Validation;
 import org.junit.Test;
 import org.reflections.Reflections;
 import pdf.PdfCreation;
@@ -25,41 +28,136 @@ public class TestValidators {
         InputStream packages = Thread.currentThread().getContextClassLoader().getResourceAsStream("packages.txt");
         BufferedReader reader = new BufferedReader(new InputStreamReader(packages));
 
-        Map<String, PdfCreation> creatorsDictionary = new HashMap<>();
+        Map<String, Class<PdfCreation>> creators = new HashMap<>();
+        Map<String, Class<Validation>> validators = new HashMap<>();
+
         String line;
         while((line = reader.readLine()) != null) {
-            creatorsDictionary.put(line, (PdfCreation)Class.forName(line + ".PdfCreator").newInstance());
+            creators.put(line, (Class<PdfCreation>)Class.forName(line + ".PdfCreator"));
+            validators.put(line, (Class<Validation>)Class.forName(line + "validator.Validator"));
         }
 
-        for(String key: creatorsDictionary.keySet()) {
-            System.out.println(key + "->" + creatorsDictionary.get(key).toString());
-            PdfCreatorRoot creator = (PdfCreatorRoot) creatorsDictionary.get(key);
+//        for(String key: creators.keySet()) {
+//            System.out.println(key + "->" + creators.get(key).toString());
+//            System.out.println(key + "->" + validators.get(key).toString());
+//            PdfCreatorRoot creator = (PdfCreatorRoot) creators.get(key);
+//        }
 
+        String declName = "d106";
 
-        }
+//        boolean containsDec = false;
+//        for(Package p : Package.getPackages()) {
+//
+//            containsDec |= p.getName().contains(declName);
+//
+//        }
 
-        boolean containsDec106 = false;
-        for(Package p : Package.getPackages()) {
+        Validation validation = validators.get(declName).newInstance();
+        PdfCreation pdfCreation = creators.get(declName).newInstance();
 
-            containsDec106 |= p.getName().contains("d106");
+        int code = parseDocumentXML("./examples/declaratie106.xml", validation, pdfCreation, declName.toUpperCase());
+        System.out.println(code);
 
-        }
-
-        assertTrue("Anaf libraries are in test classpath", containsDec106);
+//        assertTrue("Anaf libraries are in test classpath", containsDec);
 
     }
 
-    private void listClassesInPackage(String packageName) {
-        Reflections reflections = new Reflections(packageName);
+    private int parseDocumentXML(String xmlFile, Validation _validator, PdfCreation pdfCreation, String _declType)
+    {
+        int returns;
+        try
+        {
 
-        Set<Class<? extends PdfCreation>> subTypes =
-                reflections.getSubTypesOf(PdfCreation.class);
+            String errFile = xmlFile + ".err.txt";
+            StringBuffer _finalMessage = new StringBuffer();
+            String _newLine = System.lineSeparator();
+            Info _validationInfo;
 
-        for(Class<? extends PdfCreation> pdf : subTypes){
+            returns = _validator.parseDocument(xmlFile, errFile);
 
-            System.out.println(pdf.getCanonicalName());
+            if(returns < 0)
+            {
+                if(returns > -4)
+                {
+                    _finalMessage.append("Erori la validare fisier: ").append(xmlFile).append(_newLine);
+                    _finalMessage.append("       Erorile au fost scrise in fisierul: ").append(errFile).append(_newLine);
+                }
+                else if(returns == -4)
+                {
+                    _finalMessage.append("Perioada raportare eronata: ").append(_declType).append(_newLine);
+                }
+                else if(returns == -8)
+                {
+                    _finalMessage.append("Tip declaratie necunoscut: ").append(_declType).append(_newLine);
+                }
+                else
+                {
+                    _finalMessage.append("Erori la validare fisier; cod eroare=").append(Integer.toString(returns)).append(_newLine);
+                }
+            }
+            else if(returns > 0)
+            {
+                _finalMessage.append("Atentionari la validare fisier: ").append(xmlFile).append(_newLine);
+                _finalMessage.append("       Atentionarile au fost scrise in fisierul: ").append(errFile).append(_newLine);
+            }
+            else
+            {
+                _finalMessage.append("Validare fara erori fisier: ").append(xmlFile).append(_newLine);
+            }
 
+            if(returns >= 0)
+            {
+                _validationInfo = _validator.getInfo();
+
+                pdfCreation.createPdf(_validationInfo, xmlFile+".pdf", xmlFile, "");
+            }
+            else
+            {
+                _validationInfo = null;
+            }
+            System.out.println(_finalMessage);
+
+            return returns;
         }
-
+        catch(Throwable e)
+        {
+            return -9;
+        }
     }
+
+
+
+//    private int validateXML(String fileName)
+//    {
+//        int returns;
+//        try
+//        {
+//            returns = _integrator.parseDocument(fileName, null);
+//            txtResults.append(_integrator.getFinalMessage());
+//            return returns;
+//        }
+//        catch(Throwable e)
+//        {
+//            txtResults.append("Eroare de deployment!" + _newLine);
+//            txtResults.append("       mesaj: " + e.toString() + _newLine);
+//            return -2;
+//        }
+//    }
+//
+//    private int pdfCreation(String fileName)
+//    {
+//        int ret = 0;
+//        try
+//        {
+//            ret = _integrator.pdfCreation(fileName, null, null, null);
+//            txtResults.append(_integrator.getFinalMessage());
+//            return ret;
+//        }
+//        catch(Throwable e)
+//        {
+//            txtResults.append("Eroare de deployment!" + _newLine);
+//            txtResults.append("       mesaj: " + e.toString() + _newLine);
+//            return -2;
+//        }
+//    }
 }

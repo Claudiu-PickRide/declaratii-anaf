@@ -78,7 +78,7 @@ task updateFromANAF {
         //Download libraries
         def versionDictionary = [:]
 
-        def configFile = new File('configversiuniCurente.txt')
+        def configFile = new File('config/versiuniCurente.txt')
 
         def versiuni = new XmlSlurper().parse('http://static.anaf.ro/static/10/Anaf/update1/versiuni.xml')
 
@@ -128,10 +128,14 @@ task updateFromANAF {
             ant.get(src: it, dest: 'lib')
         })
 
+//        configFile.write versiuni.integrator.versiune "Declaratie;VersiuneJ;VersiuneP\n"
         configFile.write "Declaratie;VersiuneJ;VersiuneP\n"
+
+        def packages = new File("src/main/resources/packages.txt")
 
         versionDictionary.each { key, value ->
             configFile << "${key};${value.versiuneJ};${value.versiuneJ}\n"
+            packages << "${key.toString().toLowerCase()}\n"
         }
 
     }

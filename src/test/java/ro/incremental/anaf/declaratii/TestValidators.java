@@ -1,22 +1,11 @@
 package ro.incremental.anaf.declaratii;
 
 import com.google.common.io.Files;
-import dec.Info;
-import dec.LogTrace;
-import dec.Validation;
 import org.junit.Test;
-import org.reflections.Reflections;
-import pdf.PdfCreation;
-import pdf.PdfCreatorRoot;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.nio.charset.Charset;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 import static org.junit.Assert.assertTrue;
 
@@ -41,7 +30,7 @@ public class TestValidators {
         }
 
 
-        ValidateWebService.Result result = ValidateWebService.generateFromXMLString(xmlBuffer.toString(), declName);
+        Result result = ValidateWebService.generateFromXMLString(xmlBuffer.toString(), declName);
 
         System.out.println(result.toString());
     }

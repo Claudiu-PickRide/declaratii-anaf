@@ -27,6 +27,7 @@ dependencies {
 
     compile 'org.glassfish.jersey.core:jersey-server:2.22.2'
     compile 'org.glassfish.jersey.containers:jersey-container-servlet:2.22.2'
+    compile 'org.reflections:reflections:0.9.10'
 
     compile 'org.json:json:20160212'
 
@@ -74,7 +75,6 @@ task updateFromANAF {
 
         delete('DUKIntegrator/src.zip')
 
-        return
         //Download libraries
         def versionDictionary = [:]
 

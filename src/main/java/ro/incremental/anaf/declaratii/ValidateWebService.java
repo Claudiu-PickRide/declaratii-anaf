@@ -5,6 +5,10 @@ package ro.incremental.anaf.declaratii;
  */
 
 import com.google.common.base.MoreObjects;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.RemovalListener;
+import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
 import dec.Validation;
 import org.json.JSONObject;
@@ -12,10 +16,12 @@ import pdf.PdfCreation;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.*;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Path("/form")
 public class ValidateWebService {
@@ -27,6 +33,7 @@ public class ValidateWebService {
 
     private static final Map<String, Class<PdfCreation>> creators = new HashMap<>();
     private static final Map<String, Class<Validation>> validators = new HashMap<>();
+    private static Cache<String, Result> fileCache;
 
     static {
         InputStream packages = Thread.currentThread().getContextClassLoader().getResourceAsStream("packages.txt");
@@ -49,6 +56,11 @@ public class ValidateWebService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        fileCache = CacheBuilder.<String, Result>newBuilder()
+                .expireAfterWrite(10, TimeUnit.MINUTES)
+                .removalListener((RemovalListener<String, Result>) notification -> notification.getValue().pdfFile.delete())
+                .build();
     }
 
     @GET
@@ -58,42 +70,79 @@ public class ValidateWebService {
         return "yes";
     }
 
+    @GET
+    @Path("/download/{id}")
+    @Produces("application/pdf")
+    public Response download(@PathParam("id") String id) {
+
+        Result result = fileCache.getIfPresent(id);
+
+        if(result == null)
+        {
+            return Response.noContent().build();
+        }
+
+        Response.ResponseBuilder response = Response.ok((Object) result.pdfFile);
+        response.header("Content-Disposition", "attachment; filename=\"" +  result.decName + "\"");
+
+        return response.build();
+    }
+
     @POST
     @Path("/validate")
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String available(JSONObject input) {
+    public Response available(JSONObject input) {
 
         String declName = input.getString("tagName").replace("declaratie", "d");
         String xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + org.json.JSONML.toString(input);
 
         Result result = generateFromXMLString(xml, declName);
 
-        JSONObject ret = new JSONObject();
 
-        ret.append("message", result.message);
-        ret.append("pdfFilePath", result.pdfFilePath);
-        ret.append("resultCode", result.resultCode);
+        Response.ResponseBuilder response = Response.ok((Object)result.toJSON(), MediaType.APPLICATION_JSON);
 
-        return ret.toString();
+        return response.build();
     }
 
     public static class Result {
         public String message;
-        public String pdfFilePath;
+        public String fileId;
+        public String decName;
+        public File pdfFile;
         public int resultCode;
 
-        public Result(String message, String pdfFilePath, int resultCode) {
+        public Result(String message, String fileId, int resultCode) {
             this.message = message;
-            this.pdfFilePath = pdfFilePath;
+            this.fileId = fileId;
             this.resultCode = resultCode;
+        }
+
+        public Result(String message, String fileId, int resultCode, File pdfFile, String decName) {
+            this.message = message;
+            this.fileId = fileId;
+            this.resultCode = resultCode;
+            this.pdfFile = pdfFile;
+            this.decName = decName;
+        }
+
+        public String toJSON() {
+            JSONObject ret = new JSONObject();
+
+            ret.put("message", this.message);
+            ret.put("fileId", this.fileId);
+            ret.put("decName", this.decName);
+            ret.put("resultCode", this.resultCode);
+
+            return ret.toString();
         }
 
         @Override
         public String toString() {
             return MoreObjects.toStringHelper("Result")
                     .add("Message", message)
-                    .add("PdfFilePath", pdfFilePath)
+                    .add("FileId", fileId)
+                    .add("DecName", decName)
                     .add("ResultCode", resultCode)
                     .toString();
         }
@@ -166,7 +215,14 @@ public class ValidateWebService {
 
             if (returnCode >= FISIER_VALID) {
                 pdfCreation.createPdf(validator.getInfo(), pdfFilePath, xmlFilePath, "");
-                return new Result(finalMessage.toString(), pdfFilePath, returnCode);
+
+                String hash = Hashing.murmur3_32().hashString(pdfFilePath, Charset.forName("UTF-8")).toString();
+
+                Result result = new Result(finalMessage.toString(), hash, returnCode, new File(pdfFilePath), declName);
+
+                fileCache.put(hash, result);
+
+                return result;
             }
 
             return new Result(finalMessage.toString(), "", returnCode);

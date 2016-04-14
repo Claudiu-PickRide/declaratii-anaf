@@ -8,6 +8,8 @@ Proiectul este menținut de [Incremental Community](http://incrementalcommunity.
 
 Validează informațiile necesare pentru declarații și dacă sunt valide creează pdf-ul corespondent cu datele deja completate. Nu poate semna fișierele (mai multe detalii [aici](http://maisimplu.gov.ro/2016/03/21/obtinereafolosirea-unei-semnaturi-digitale/))
 
+[Demo cu declaratia 106 precompletata aici](https://damp-spire-89553.herokuapp.com/) 
+
 #Sursele
 
 * DUKIntegrator - [Site-ul ANAF](https://www.anaf.ro/anaf/internet/ANAF/servicii_online/declaratii_electronice/descarcare_declaratii)

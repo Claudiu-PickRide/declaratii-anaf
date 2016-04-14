@@ -12,10 +12,16 @@ public class JobQueueServer {
 
     public static void main(String[] args) {
 
+        int portNumber = 5000;
+        String port = System.getenv("PORT");
+        if(port != null) {
+            portNumber = Integer.parseInt(port);
+        }
+
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
         context.setContextPath("/");
 
-        Server jettyServer = new Server(9999);
+        Server jettyServer = new Server(portNumber);
         jettyServer.setHandler(context);
 
         ServletHolder jerseyServlet = context.addServlet(ServletContainer.class, "/*");

@@ -120,7 +120,7 @@ public class ValidateWebService {
         }
 
         Response.ResponseBuilder response = Response.ok((Object) result.pdfFile);
-        response.header("Content-Disposition", "attachment; filename=\"" + result.decName + "\"");
+        response.header("Content-Disposition", "attachment; filename=\"" + result.decName + ".pdf\"");
 
         return response.build();
     }

@@ -65,7 +65,9 @@ distributions {
     }
 }
 
-task stage(dependsOn: ['clean', 'build', 'installDist'])
+task stage {
+    dependsOn installDist
+}
 
 task updateFromANAF {
     doFirst {

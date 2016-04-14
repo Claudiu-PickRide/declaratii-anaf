@@ -1,0 +1,49 @@
+<html>
+<head>
+    <title>Anaf form validation</title>
+    <link rel='stylesheet prefetch' href='//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.7/semantic.css'>
+</head>
+<body>
+
+<div ng-app="declaratii" class='main'>
+
+    <div class="ui segment" ng-controller="mainController">
+
+        <form class="ui form" name="newOrderForm" ng-submit="" novalidate>
+
+            <div class="ui segment">
+                <!-- Form Name -->
+                <h4 class="ui dividing header">Declaratie JSON</h4>
+
+                <!-- Textarea -->
+                <div class="field">
+                    <textarea class="form-control" placeholder="Scrie aici declarația in format JSON" ng-model="vm.decl106"></textarea>
+                </div>
+                <h4 class="ui dividing header">Raspuns</h4>
+
+                <!-- Textarea -->
+                <div class="field">
+                    <div class="col-md-4">
+                        {{vm.response | json}}
+                    </div>
+                </div>
+            </div>
+
+
+            <button name="add-stop" class="ui primary button" ng-click="vm.generate()">Generează declarația</button>
+            <a ng-show="vm.pdf" ng-href="/download/{{vm.pdf}}" name="add-stop" class="ui primary button">Download pdf</a>
+
+        </form>
+
+    </div>
+
+</div>
+
+<script src='//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.14/angular.min.js'></script>
+<script src='//cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.7/semantic.js'></script>
+<script src='./javascript.js'></script>
+
+</body>
+</html>

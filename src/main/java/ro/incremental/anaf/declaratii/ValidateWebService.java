@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
-@Path("/form")
+@Path("/")
 public class ValidateWebService {
 
     private static final int PERIOADA_RAPORTARE_ERONATA = -4;
@@ -32,7 +32,9 @@ public class ValidateWebService {
 
     private static final Map<String, Class<PdfCreation>> creators = new HashMap<>();
     private static final Map<String, Class<Validation>> validators = new HashMap<>();
-    private static Cache<String, Result> fileCache;
+    private static final Cache<String, Result> fileCache;
+    private static final String indexHtml;
+    private static final String javascript;
 
     static {
         InputStream packages = Thread.currentThread().getContextClassLoader().getResourceAsStream("packages.txt");
@@ -56,10 +58,47 @@ public class ValidateWebService {
             e.printStackTrace();
         }
 
+        indexHtml = cacheStaticFile("index.html");
+        javascript = cacheStaticFile("javascript.js");
+
         fileCache = CacheBuilder.<String, Result>newBuilder()
                 .expireAfterWrite(10, TimeUnit.MINUTES)
                 .removalListener((RemovalListener<String, Result>) notification -> notification.getValue().pdfFile.delete())
                 .build();
+    }
+
+    private static String cacheStaticFile(String resource) {
+        String line;
+        InputStream indexHtmlStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(resource);
+        BufferedReader htmlReader = new BufferedReader(new InputStreamReader(indexHtmlStream));
+
+        StringBuilder result = new StringBuilder();
+
+        try {
+            while ((line = htmlReader.readLine()) != null) {
+                result.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return result.toString();
+    }
+
+    @GET
+    @Path("/")
+    @Produces(MediaType.TEXT_HTML)
+    public Response index() {
+
+        return Response.ok(indexHtml).build();
+    }
+
+    @GET
+    @Path("/javascript.js")
+    @Produces(MediaType.TEXT_HTML)
+    public Response javascript() {
+
+        return Response.ok(javascript).build();
     }
 
     @GET
@@ -76,13 +115,12 @@ public class ValidateWebService {
 
         Result result = fileCache.getIfPresent(id);
 
-        if(result == null)
-        {
+        if (result == null) {
             return Response.noContent().build();
         }
 
         Response.ResponseBuilder response = Response.ok((Object) result.pdfFile);
-        response.header("Content-Disposition", "attachment; filename=\"" +  result.decName + "\"");
+        response.header("Content-Disposition", "attachment; filename=\"" + result.decName + "\"");
 
         return response.build();
     }
@@ -99,7 +137,7 @@ public class ValidateWebService {
         Result result = generateFromXMLString(xml, declName);
 
 
-        Response.ResponseBuilder response = Response.ok((Object)result.toJSON(), MediaType.APPLICATION_JSON);
+        Response.ResponseBuilder response = Response.ok((Object) result.toJSON(), MediaType.APPLICATION_JSON);
 
         return response.build();
     }
@@ -145,7 +183,7 @@ public class ValidateWebService {
 
                     File errFile = new File(errFilePath);
                     StringBuilder errorBuffer = new StringBuilder();
-                    if(errFile.exists()) {
+                    if (errFile.exists()) {
                         BufferedReader reader = Files.newReader(errFile, Charset.forName("UTF-8"));
                         String line;
                         while ((line = reader.readLine()) != null) {

@@ -1,0 +1,12 @@
+version: '2'
+services:
+  app:
+    image: java:8
+    working_dir: /app
+    volumes:
+      - .:/app
+    command: /app/build/install/declaratii-anaf/bin/declaratii-anaf
+    environment:
+      - PORT=8080
+    ports:
+      - "8080:8080"

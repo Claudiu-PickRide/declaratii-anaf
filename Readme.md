@@ -20,6 +20,18 @@ Validează informațiile necesare pentru declarații și dacă sunt valide creea
 
 Proiectul foloseste gradle ca mecanism de build. 
 
+```
+./gradlew stage 
+```
+
+#Start with docker
+ 
+ ```
+ docker-compose up -d
+ ```
+ 
+ Click: http://localhost:8080
+
 ##Requirements
 
  * Java 8

@@ -129,7 +129,8 @@ public class Result {
 
     public static Result generateFromXMLString(String xml, String declName) {
         try {
-            File xmlFile = File.createTempFile(declName, ".tmp");
+            File tempDir = Files.createTempDir();
+            File xmlFile = new File(tempDir, declName + ".xml");
             Files.newWriter(xmlFile, Charset.forName("UTF-8")).append(xml).close();
 
             return generatePdfFromXMLFile(xmlFile.getAbsolutePath(), declName);

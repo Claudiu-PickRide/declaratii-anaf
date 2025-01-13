@@ -1,7 +1,7 @@
 version: '2'
 services:
   app:
-    image: java:8
+    image: openjdk:8-jdk
     working_dir: /app
     volumes:
       - .:/app
@@ -9,4 +9,4 @@ services:
     environment:
       - PORT=8080
     ports:
-      - "8080:8080"
+      - '8080:8080'

@@ -133,6 +133,9 @@ public class Result {
             File xmlFile = new File(tempDir, declName + ".xml");
             Files.newWriter(xmlFile, Charset.forName("UTF-8")).append(xml).close();
 
+            System.out.println("filePath: " + xmlFile.getAbsolutePath());
+            System.out.println("decName: " + declName);
+
             return generatePdfFromXMLFile(xmlFile.getAbsolutePath(), declName);
 
         } catch (Throwable e) {

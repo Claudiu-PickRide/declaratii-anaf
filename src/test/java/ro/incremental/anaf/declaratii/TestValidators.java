@@ -18,20 +18,20 @@ public class TestValidators {
     @Test
     public void D106() throws Exception {
 
-        System.out.println(validateXmlDecl("D106"));
+        System.out.println(validateXmlDecl("d106"));
     }
 
     @Test
     public void D390() throws Exception {
 
-        System.out.println(validateXmlDecl("D390"));
+        System.out.println(validateXmlDecl("d390"));
 
     }
 
     @Test
     public void XML2JsonML() throws Exception {
 
-        System.out.println(xmlToJsonML("D390"));
+        System.out.println(xmlToJsonML("d390"));
     }
 
     private JSONObject xmlToJsonML(String declName) throws IOException {

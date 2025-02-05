@@ -11,6 +11,7 @@ buildscript {
 
 plugins {
     id 'java'
+    id 'groovy'
     id 'application'
 }
 
@@ -30,20 +31,21 @@ repositories {
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
-    compile fileTree(dir: "${project.rootDir}/lib", includes: ['*.jar'])
+    implementation fileTree(dir: "${project.rootDir}/lib", includes: ['*.jar'])
 
-    compile 'org.eclipse.jetty:jetty-server:9.3.8.v20160314'
-    compile 'org.eclipse.jetty:jetty-servlet:9.3.8.v20160314'
+    implementation 'org.eclipse.jetty:jetty-server:9.3.8.v20160314'
+    implementation 'org.eclipse.jetty:jetty-servlet:9.3.8.v20160314'
 
-    compile 'org.glassfish.jersey.core:jersey-server:2.22.2'
-    compile 'org.glassfish.jersey.containers:jersey-container-servlet:2.22.2'
-    compile 'org.reflections:reflections:0.9.10'
+    implementation 'org.glassfish.jersey.core:jersey-server:2.22.2'
+    implementation 'org.glassfish.jersey.containers:jersey-container-servlet:2.22.2'
+    implementation 'org.reflections:reflections:0.9.10'
 
-    compile 'org.json:json:20160212'
+    implementation 'org.json:json:20160212'
+    implementation 'org.codehaus.groovy:groovy-all:3.0.9'
 
-    compile 'org.glassfish.jersey.media:jersey-media-multipart:2.22.2'
+    implementation 'org.glassfish.jersey.media:jersey-media-multipart:2.22.2'
 
-    testCompile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
 }
 
 sourceSets {
@@ -85,10 +87,11 @@ task updateFromANAF {
     doFirst {
 
         //Download an unpack sources
-        ant.get(src: 'http://static.anaf.ro/static/10/Anaf/Declaratii_R/AplicatiiDec/src_20140505.zip', dest: 'DUKIntegrator/src.zip')
-        ant.unzip(src: 'DUKIntegrator/src.zip', dest: 'DUKIntegrator')
+        // https://static.anaf.ro/static/DUKIntegrator/dist_javaInclus20200203.zip
+        // ant.get(src: 'http://static.anaf.ro/static/10/Anaf/Declaratii_R/AplicatiiDec/src_20140505.zip', dest: 'DUKIntegrator/src.zip')
+        // ant.unzip(src: 'DUKIntegrator/src.zip', dest: 'DUKIntegrator')
 
-        delete('DUKIntegrator/src.zip')
+        // delete('DUKIntegrator/src.zip')
 
         //Download libraries
         def versionDictionary = [:]

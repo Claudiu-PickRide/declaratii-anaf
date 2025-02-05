@@ -145,10 +145,8 @@ task updateFromANAF {
             ant.get(src: it, dest: 'lib')
         })
 
-//        configFile.write versiuni.integrator.versiune "Declaratie;VersiuneJ;VersiuneP\n"
-        configFile.write "Declaratie;VersiuneJ;VersiuneP\n"
-
         def packages = new File("src/main/resources/packages.txt")
+        configFile.write "Declaratie;VersiuneJ;VersiuneP\n"
 
         versionDictionary.each { key, value ->
             configFile << "${key};${value.versiuneJ};${value.versiuneJ}\n"

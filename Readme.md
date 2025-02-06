@@ -1,19 +1,22 @@
 # Descriere
 
-Acest proiect este o variantă web a softului J de depus declarații de pe [site-ul ANAF](https://www.anaf.ro/anaf/internet/ANAF/servicii_online/declaratii_electronice/descarcare_declaratii). 
-Codul și librariile sunt descarcate de pe site-ul ANAF. Proiectul utilizează **gradle** ca mecanism de build. 
+Acest proiect este o variantă **NEOFICIALA** a softului J de depus declarații de pe [site-ul ANAF](https://www.anaf.ro/anaf/internet/ANAF/servicii_online/declaratii_electronice/descarcare_declaratii). 
+Librariile sunt descarcate de pe site-ul ANAF. Proiectul utilizează **gradle** ca mecanism de build. 
 Proiectul este menținut de [Incremental Community](http://incrementalcommunity.ro).
 
-# Ce face acest soft ?
+# Arhitectura
 
-Validează informațiile necesare pentru declarații și dacă sunt valide creează pdf-ul corespondent cu datele deja completate. Nu poate semna fișierele (mai multe detalii [aici](http://maisimplu.gov.ro/2016/03/21/obtinereafolosirea-unei-semnaturi-digitale/))
+![Arhitectura](schema.png)
 
-[Demo cu declaratia 106 precompletata aici](https://damp-spire-89553.herokuapp.com/) 
+
+# De ce e nevoie de acest soft ?
+
+Pentru creearea programatica a declaratiilor dupa ce xml-ul a fost generat. DUKIntegrator este disponibil doar in mod GUI si doar pentru windows.
 
 # Sursele
 
 * DUKIntegrator - [Site-ul ANAF](https://www.anaf.ro/anaf/internet/ANAF/servicii_online/declaratii_electronice/descarcare_declaratii)
-* Librăriile de validare/creeare pdf pentru fiecare declaratie sunt descarcate tot de pe site-ul ANAF. Pentru sursele corespondente adresați-vă direct lor.
+* Lista librăriilor de validare/creeare pdf pentru fiecare declaratie sunt disponibile [aici](https://static.anaf.ro/static/10/Anaf/update5/versiuni.xml)
 * Wrapper pentru validatoare creat de comunitate
 
 # Build
@@ -21,7 +24,7 @@ Validează informațiile necesare pentru declarații și dacă sunt valide creea
 Proiectul foloseste gradle ca mecanism de build. 
 
 ```
-./gradlew stage 
+./gradlew installDist 
 ```
 
 # Start with docker
@@ -57,6 +60,9 @@ Deoarece iText-5.0.4 este folosit la DUKIntegrator și la librăriile de validar
 # Exemplu validare/generare utilizand API
 
 ```
+# build
+
+./gradlew installDist
 
 # Start server
 docker compose up -d

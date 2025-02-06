@@ -54,7 +54,28 @@ Deoarece iText-5.0.4 este folosit la DUKIntegrator și la librăriile de validar
 * Poți să faci o propunere de îmbunătățire 
 * Poți să rezolvi o problemă și să faci un pull request
 
-# Exemplu validare/generare
+# Exemplu validare/generare utilizand API
+
+```
+
+# Start server
+docker compose up -d
+
+# JSON
+curl -X POST -H "Content-Type: application/json" -d @examples/D106.json http://localhost:5001/validate
+
+# XML
+curl -X POST -H "Content-Type: multipart/form-data" -F "file=@examples/D106.xml" -F "decName=d106" http://localhost:5001/upload
+
+# Response
+# {"resultCode":0,"message":"Validare fara erori \n","decName":"d106","fileId":"f1a355c1"}
+
+# Download PDF
+curl http://localhost:5001/download/f1a355c1
+
+```
+
+# Exemplu validare/generare din java
 
 ```
     private Result validateXmlDecl(String declName) throws IOException {

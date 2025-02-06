@@ -9,10 +9,11 @@ import org.eclipse.jetty.servlet.ServletHolder;
 import org.glassfish.jersey.servlet.ServletContainer;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.server.ResourceConfig;
+import jakarta.servlet.Servlet;
 
 public class JobQueueServer {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         int portNumber = 5000;
         String port = System.getenv("PORT");
@@ -26,14 +27,15 @@ public class JobQueueServer {
         Server jettyServer = new Server(portNumber);
         jettyServer.setHandler(context);
 
-        ServletHolder jerseyServlet = context.addServlet(ServletContainer.class, "/*");
-        jerseyServlet.setInitOrder(0);
+        // Create ResourceConfig
+        ResourceConfig config = new ResourceConfig();
+        config.packages("ro.incremental.anaf.declaratii");
+        config.register(MultiPartFeature.class);
 
-        // Tells the Jersey Servlet which REST service/class to load.
-        jerseyServlet.setInitParameter("jersey.config.server.provider.packages", "ro.incremental.anaf.declaratii");
-
-        jerseyServlet.setInitParameter("jersey.config.server.provider.classnames", MultiPartFeature.class.getName());
-
+        // Create ServletContainer with ResourceConfig and cast to Servlet
+        Servlet servletContainer = new ServletContainer(config);
+        ServletHolder jerseyServlet = new ServletHolder(servletContainer);
+        context.addServlet(jerseyServlet, "/*");
 
         try {
             jettyServer.start();

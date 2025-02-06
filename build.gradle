@@ -1,11 +1,9 @@
 buildscript {
     repositories {
         mavenCentral()
-        jcenter()
     }
     dependencies {
         classpath 'org.json:json:20160212'
-
     }
 }
 
@@ -13,6 +11,11 @@ plugins {
     id 'java'
     id 'groovy'
     id 'application'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
 }
 
 compileJava {
@@ -26,24 +29,31 @@ compileTestJava {
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
     implementation fileTree(dir: "${project.rootDir}/lib", includes: ['*.jar'])
 
-    implementation 'org.eclipse.jetty:jetty-server:9.3.8.v20160314'
-    implementation 'org.eclipse.jetty:jetty-servlet:9.3.8.v20160314'
+    implementation 'org.eclipse.jetty:jetty-server:11.0.15'
+    implementation 'org.eclipse.jetty:jetty-servlet:11.0.15'
+    implementation 'org.eclipse.jetty:jetty-webapp:11.0.15'
 
-    implementation 'org.glassfish.jersey.core:jersey-server:2.22.2'
-    implementation 'org.glassfish.jersey.containers:jersey-container-servlet:2.22.2'
+    implementation 'org.glassfish.jersey.core:jersey-server:3.1.5'
+    implementation 'org.glassfish.jersey.containers:jersey-container-servlet:3.1.5'
+    implementation 'org.glassfish.jersey.inject:jersey-hk2:3.1.5'
+    implementation 'org.glassfish.jersey.media:jersey-media-multipart:3.1.5'
+    implementation 'org.glassfish.jersey.media:jersey-media-json-binding:3.1.5'
+
+    implementation 'jakarta.ws.rs:jakarta.ws.rs-api:3.1.0'
+    implementation 'jakarta.servlet:jakarta.servlet-api:5.0.0'
+    implementation 'jakarta.annotation:jakarta.annotation-api:2.1.1'
+    implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
+
     implementation 'org.reflections:reflections:0.9.10'
-
     implementation 'org.json:json:20160212'
     implementation 'org.codehaus.groovy:groovy-all:3.0.9'
-
-    implementation 'org.glassfish.jersey.media:jersey-media-multipart:2.22.2'
 
     testImplementation 'junit:junit:4.12'
 }
@@ -51,7 +61,8 @@ dependencies {
 sourceSets {
     main {
         java {
-            srcDir 'DUKIntegrator/src'
+            srcDir 'src/main/java'
+            exclude 'DUKIntegrator/**'
         }
     }
 }

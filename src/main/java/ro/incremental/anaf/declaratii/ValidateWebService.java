@@ -92,11 +92,6 @@ public class ValidateWebService {
         @FormDataParam("file") FormDataContentDisposition fileDetail,
         @FormDataParam("decName") String decName) {
 
-        System.out.println("uploadedInputStream: " + uploadedInputStream);
-        System.out.println("fileDetail: " + fileDetail);
-        System.out.println("decName: " + decName);
-
-
         if (uploadedInputStream == null || fileDetail == null || decName == null || decName.isEmpty()) {
             // Return JSON error response with 400 status
             String errorMessage = "No file uploaded or missing declaration name";
@@ -106,29 +101,12 @@ public class ValidateWebService {
         }
 
         try {
-            // Create a temporary directory
-            File tempDir = Files.createTempDir();
-
-            // Create a new file in the temp directory with the uploaded file name
-            File storedFile = new File(tempDir, fileDetail.getFileName());
-
-            // Write uploaded file data to the new file
-            try (FileOutputStream out = new FileOutputStream(storedFile)) {
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = uploadedInputStream.read(buffer)) != -1) {
-                    out.write(buffer, 0, bytesRead);
-                }
-            }
             String lowerCaseDecName = decName.toLowerCase();
-            System.out.println("path: " + storedFile.getAbsolutePath());
-            System.out.println("fileName: " +  fileDetail.getFileName());
-            Result result = Result.generatePdfFromXMLFile(storedFile.getAbsolutePath(), lowerCaseDecName);
+            Result result = Result.generateFromXMLStream(uploadedInputStream, lowerCaseDecName);
             if (result.getHashCode() != null) {
                 Result.cacheResult(result);
             }
-
-
+            
             // Return JSON response with result data which contains data to download a pdf
             return Response.ok(result.toJSON(), MediaType.APPLICATION_JSON).build();
 

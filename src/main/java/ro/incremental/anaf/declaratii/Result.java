@@ -19,6 +19,8 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by Alex Proca <alex.proca@gmail.com> on 14/04/16.
  */
+
+@SuppressWarnings("unchecked")
 public class Result {
     public final String message;
     public final String decName;
@@ -44,7 +46,6 @@ public class Result {
 
 
         String line;
-
         try {
             while ((line = reader.readLine()) != null) {
                 try {
@@ -127,6 +128,23 @@ public class Result {
                 .toString();
     }
 
+
+    public static Result generateFromXMLStream(InputStream xmlStream, String declName) throws IOException {
+
+        // Convert InputStream to String
+        StringBuilder xmlStringBuilder = new StringBuilder();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(xmlStream, Charset.forName("UTF-8")));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            xmlStringBuilder.append(line).append(System.lineSeparator());
+        }
+        String xmlString = xmlStringBuilder.toString();
+
+        // Delegate to generateFromXMLString
+        return generateFromXMLString(xmlString, declName);
+
+    }
+
     public static Result generateFromXMLString(String xml, String declName) {
         try {
             File tempDir = Files.createTempDir();
@@ -157,8 +175,8 @@ public class Result {
     public static Result generatePdfFromXMLFile(String xmlFilePath, String declName) {
         try {
 
-            Validation validator = validators.get(declName).newInstance();
-            PdfCreation pdfCreation = creators.get(declName).newInstance();
+            Validation validator = validators.get(declName).getDeclaredConstructor().newInstance();
+            PdfCreation pdfCreation = creators.get(declName).getDeclaredConstructor().newInstance();
 
             String finalMessage = "";
             String newLine = System.lineSeparator();

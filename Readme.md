@@ -37,7 +37,7 @@ Proiectul foloseste gradle ca mecanism de build.
 
 ## Requirements
 
- * Java 8
+ * Java 17
  * git
 
 ## Update al librariilor de pe site-ul ANAF

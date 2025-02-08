@@ -103,3 +103,19 @@ distributions {
 task stage {
     dependsOn installDist
 }
+
+task dockerBuild(type: Exec) {
+    dependsOn installDist
+    group = 'docker'
+    description = 'Builds the Docker image for declaratii-anaf'
+    
+    commandLine 'docker', 'build', '-t', 'declaratii-anaf', '.'
+}
+
+task dockerRun(type: Exec) {
+    dependsOn dockerBuild
+    group = 'docker'
+    description = 'Runs the declaratii-anaf Docker container'
+    
+    commandLine 'docker', 'compose', 'up', '-d'
+}

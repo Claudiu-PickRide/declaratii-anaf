@@ -80,11 +80,16 @@ Librariile descărcate în directorul `lib` sunt disponibile automat pentru ambe
 
 # Start with docker
  
- ```
- docker-compose up -d
- ```
+```bash
+# Build and run in one command
+./gradlew :api:dockerRun
+
+# Or build steps separately
+./gradlew :api:dockerBuild
+docker compose up -d
+```
  
- Click: http://localhost:8080
+Click: http://localhost:8080
 
 ## Requirements
 
@@ -94,6 +99,17 @@ Librariile descărcate în directorul `lib` sunt disponibile automat pentru ambe
 # Licența
 
 Deoarece iText-5.0.4 este folosit la DUKIntegrator și la librăriile de validare, licența codului trebuie să fie AGPL. O copie a licenței în engleză se află în fișierul LICENSE.
+
+# Dezvoltare GUI
+
+Pentru modificări ale interfeței grafice din modulul `gui` (DUKIntegrator), este recomandat să folosiți Apache NetBeans IDE. Acesta oferă un editor vizual pentru interfețe Swing și gestionează automat codul generat.
+
+## Configurare NetBeans
+
+1. Descărcați și instalați [Apache NetBeans](https://netbeans.apache.org/front/main/download/)
+2. Deschideți proiectul în NetBeans folosind "Open Project" și selectând directorul rădăcină
+3. Expandați modulul `gui` din Projects
+4. Fișierele de interfață (.java) pot fi deschise în modul Design pentru editare vizuală
 
 # Cum pot să ajut ?
 

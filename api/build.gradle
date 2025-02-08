@@ -34,8 +34,6 @@ repositories {
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
-    implementation fileTree(dir: "../lib", includes: ['*.jar'])
-
     implementation 'org.eclipse.jetty:jetty-server:11.0.15'
     implementation 'org.eclipse.jetty:jetty-servlet:11.0.15'
     implementation 'org.eclipse.jetty:jetty-webapp:11.0.15'
@@ -66,7 +64,10 @@ sourceSets {
     }
 }
 
-mainClassName = "ro.incremental.anaf.declaratii.JobQueueServer"
+application {
+    mainClass = "ro.incremental.anaf.declaratii.JobQueueServer"
+    applicationDefaultJvmArgs = ['-Xms512m', '-Xmx1024m']
+}
 
 distTar {
     compression = Compression.GZIP
@@ -75,15 +76,18 @@ distTar {
 distributions {
     main {
         contents {
+            duplicatesStrategy = DuplicatesStrategy.EXCLUDE
             from('config') {
                 into "config"
             }
-
             from('examples') {
                 into 'examples'
             }
             from('ajutor') {
                 into 'ajutor'
+            }
+            from('../lib') {
+                into 'lib'
             }
         }
     }

@@ -21,11 +21,62 @@ Pentru creearea programatica a declaratiilor dupa ce xml-ul a fost generat. DUKI
 
 # Build
 
-Proiectul foloseste gradle ca mecanism de build. 
+Proiectul foloseste gradle ca mecanism de build și este structurat în două module:
+- `api` - Serviciul REST pentru validare și generare PDF
+- `gui` (în directorul DUKIntegrator) - Interfața grafică pentru validare și semnare
 
+## Opțiuni de build
+
+Din directorul rădăcină, puteți rula:
+```bash
+# Build toate modulele
+./gradlew build
+
+# Build doar modulul API
+./gradlew :api:build
+
+# Build doar modulul GUI
+./gradlew :gui:build
+
+# Instalare pentru rulare
+./gradlew installDist
 ```
-./gradlew installDist 
+
+## Rulare API din linia de comandă
+
+Pentru a rula API-ul fără Docker:
+```bash
+# Creează distribuția
+./gradlew :api:installDist
+
+# Rulează aplicația
+cd api/build/install/api/bin
+./api    # pe Unix/Mac
+api.bat  # pe Windows
 ```
+
+## Rulare GUI din linia de comandă
+
+Pentru a rula interfața grafică:
+```bash
+# Creează distribuția
+./gradlew :gui:installDist
+
+# Rulează aplicația
+cd DUKIntegrator/build/install/gui/bin
+./gui    # pe Unix/Mac
+gui.bat  # pe Windows
+```
+
+## Update al librariilor de pe site-ul ANAF
+
+```bash
+./gradlew -q updateFromANAF
+git add ./lib config/versiuniCurente.txt
+git commit -m "Update librarii validare"
+```
+
+Librariile descărcate în directorul `lib` sunt disponibile automat pentru ambele module.
 
 # Start with docker
  
@@ -39,12 +90,6 @@ Proiectul foloseste gradle ca mecanism de build.
 
  * Java 17
  * git
-
-## Update al librariilor de pe site-ul ANAF
-
-    ./gradlew -q updateFromANAF
-    git add ./lib configversiuniCurente.txt
-    git commit -m "Update librarii validare"
 
 # Licența
 

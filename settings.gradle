@@ -1,4 +1,5 @@
 rootProject.name = 'declaratii-anaf'
 
 include 'api'
-include 'DUKIntegrator' 
+include 'gui'
+project(':gui').projectDir = file('DUKIntegrator') 

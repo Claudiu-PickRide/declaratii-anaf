@@ -119,3 +119,65 @@ gradle-app.setting
 !gradle-wrapper.jar
 
 .DS_Store
+
+# Gradle
+.gradle/
+build/
+gradle-app.setting
+!gradle-wrapper.jar
+
+# IDE - IntelliJ IDEA
+.idea/
+.idea_modules/
+*.iml
+*.ipr
+*.iws
+out/
+
+# IDE - Eclipse
+.settings/
+.project
+.classpath
+.metadata
+.factorypath
+.buildpath
+.target
+.texlipse
+.externalToolBuilders/
+*.launch
+
+# IDE - NetBeans
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+.nb-gradle/
+
+# Java
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+*.zip
+*.tar.gz
+*.rar
+.mtj.tmp/
+hs_err_pid*
+
+# Temporary files
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+
+# Logs
+*.log
+
+# OS specific
+.DS_Store 

@@ -90,31 +90,51 @@ public class ValidateWebService {
     public Response uploadXmlFile(
         @FormDataParam("file") InputStream uploadedInputStream,
         @FormDataParam("file") FormDataContentDisposition fileDetail,
-        @FormDataParam("decName") String decName) {
+        @FormDataParam("decName") String decName,
+        @QueryParam("sync") @DefaultValue("false") boolean sync) {
 
         if (uploadedInputStream == null || fileDetail == null || decName == null || decName.isEmpty()) {
             // Return JSON error response with 400 status
             String errorMessage = "No file uploaded or missing declaration name";
             Result result = new Result(errorMessage, -9);
             return Response.ok(result.toJSON(), MediaType.APPLICATION_JSON).build();
-
         }
 
         try {
             String lowerCaseDecName = decName.toLowerCase();
             Result result = Result.generateFromXMLStream(uploadedInputStream, lowerCaseDecName);
-            if (result.getHashCode() != null) {
-                Result.cacheResult(result);
-            }
-            
-            // Return JSON response with result data which contains data to download a pdf
-            return Response.ok(result.toJSON(), MediaType.APPLICATION_JSON).build();
 
+            if (sync) {
+                if (result.getHashCode() != null) {
+                    // Send the resulting file as response body
+                    Response.ResponseBuilder response = Response.ok(result.pdfFile);
+                    response.header("Content-Disposition", "attachment; filename=\"" + result.decName + ".pdf\"");
+                    response.header("X-Validation-Message", result.message);
+                    return response.build();
+                } else {
+                    // Send error response
+                    return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                                   .entity(result.toJSON())
+                                   .type(MediaType.APPLICATION_JSON)
+                                   .build();
+                }
+            } else {
+                if (result.getHashCode() != null) {
+                    Result.cacheResult(result);
+                }
+                // Return JSON response with result data
+                return Response.ok(result.toJSON(), MediaType.APPLICATION_JSON)
+                               .header("X-Validation-Message", result.message)
+                               .build();
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
             Result result = new Result(e.getMessage(), -9);
-            return Response.ok(result.toJSON(), MediaType.APPLICATION_JSON).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                           .entity(result.toJSON())
+                           .type(MediaType.APPLICATION_JSON)
+                           .build();
         }
     }
 

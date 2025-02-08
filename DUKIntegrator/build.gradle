@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.dukintegrator'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs '../lib'
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: '../lib', include: ['*.jar'])
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+} 

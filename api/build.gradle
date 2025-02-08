@@ -11,6 +11,8 @@ plugins {
     id 'java'
     id 'groovy'
     id 'application'
+    id 'idea'
+    id 'eclipse'
 }
 
 java {
@@ -30,10 +32,15 @@ compileTestJava {
 
 repositories {
     mavenCentral()
+    flatDir {
+        dirs '../lib'
+    }
 }
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
+    implementation fileTree(dir: '../lib', include: ['*.jar'])
+    
     implementation 'org.eclipse.jetty:jetty-server:11.0.15'
     implementation 'org.eclipse.jetty:jetty-servlet:11.0.15'
     implementation 'org.eclipse.jetty:jetty-webapp:11.0.15'

@@ -60,11 +60,6 @@ task updateFromANAF {
             allUrls.add(it.text())
         })
 
-        //DUK and dependencies
-        versiuni.integrator.zJars.childNodes().each({
-            allUrls.add(it.text())
-        })
-
         //Download and dependencies
         versiuni.integrator.dJars.childNodes().each({
             allUrls.add(it.text())

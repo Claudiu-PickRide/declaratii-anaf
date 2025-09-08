@@ -3,6 +3,7 @@ package ro.incremental.anaf.declaratii;
 /**
  * Created by Alex Proca <alex.proca@gmail.com> on 18/03/16.
  */
+import eu.pickride.db.DatabaseCore;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
@@ -14,6 +15,8 @@ import jakarta.servlet.Servlet;
 public class JobQueueServer {
 
     public static void main(String[] args) throws Exception {
+        DatabaseCore db = new DatabaseCore();
+
 
         int portNumber = 5000;
         String port = System.getenv("PORT");

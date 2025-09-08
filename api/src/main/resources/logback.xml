@@ -1,0 +1,23 @@
+<configuration>
+    <!-- Console appender -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Hibernate logging -->
+    <logger name="org.hibernate.SQL" level="DEBUG" /> <!-- show SQL queries -->
+    <logger name="org.hibernate.type.descriptor.sql" level="TRACE" /> <!-- show SQL params -->
+
+    <!-- Azure SDK logging -->
+    <logger name="com.azure" level="INFO" /> <!-- INFO shows requests/responses without too much noise -->
+
+    <!-- Jetty server logs -->
+    <logger name="org.eclipse.jetty" level="INFO" />
+
+    <!-- Root logger -->
+    <root level="INFO">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

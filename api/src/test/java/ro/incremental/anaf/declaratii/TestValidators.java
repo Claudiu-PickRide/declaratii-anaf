@@ -47,6 +47,13 @@ public class TestValidators {
         return Result.generateFromXMLString(fileToString(xmlFile), declName);
     }
 
+    private Result validateXmlDeclWithDate(String declName) throws IOException {
+
+        File xmlFile = new File("examples", declName + ".xml");
+
+        return ResultWithDate.generateFullFromXMLString(fileToString(xmlFile), declName).result;
+    }
+
     private String fileToString(File file) throws IOException {
 
         StringBuilder xmlBuffer = new StringBuilder();

@@ -16,6 +16,7 @@ plugins {
 }
 
 java {
+    // Hibernate 6 needs Java 17+ (you had VERSION_23, keep if running JDK 23)
     sourceCompatibility = JavaVersion.VERSION_23
     targetCompatibility = JavaVersion.VERSION_23
 }
@@ -37,29 +38,48 @@ repositories {
     }
 }
 
-// In this section you declare the dependencies for your production and test code
 dependencies {
     implementation fileTree(dir: '../lib', include: ['*.jar'])
-    
+
+    // === Jetty (embedded server) ===
     implementation 'org.eclipse.jetty:jetty-server:11.0.15'
     implementation 'org.eclipse.jetty:jetty-servlet:11.0.15'
     implementation 'org.eclipse.jetty:jetty-webapp:11.0.15'
 
+    // === Jersey (REST framework) ===
     implementation 'org.glassfish.jersey.core:jersey-server:3.1.5'
     implementation 'org.glassfish.jersey.containers:jersey-container-servlet:3.1.5'
     implementation 'org.glassfish.jersey.inject:jersey-hk2:3.1.5'
     implementation 'org.glassfish.jersey.media:jersey-media-multipart:3.1.5'
     implementation 'org.glassfish.jersey.media:jersey-media-json-binding:3.1.5'
 
+    // === Jakarta APIs ===
     implementation 'jakarta.ws.rs:jakarta.ws.rs-api:3.1.0'
     implementation 'jakarta.servlet:jakarta.servlet-api:5.0.0'
     implementation 'jakarta.annotation:jakarta.annotation-api:2.1.1'
     implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.0'
 
+    // === Hibernate + JPA (fixes EntityManagerFactory missing) ===
+    implementation 'org.hibernate.orm:hibernate-core:6.4.4.Final'
+    implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
+
+    // SQL Server JDBC driver
+    implementation 'com.microsoft.sqlserver:mssql-jdbc:12.4.2.jre11'
+
+    // === Azure Storage ===
+    implementation 'com.azure:azure-storage-blob:12.25.0'
+    implementation 'com.azure:azure-identity:1.12.0'
+
+    // === Logging (Hibernate + Azure SDK both use SLF4J) ===
+    implementation 'org.slf4j:slf4j-api:2.0.12'
+    runtimeOnly 'ch.qos.logback:logback-classic:1.4.14'
+
+    // === Utils ===
     implementation 'org.reflections:reflections:0.9.10'
     implementation 'org.json:json:20160212'
     implementation 'org.codehaus.groovy:groovy-all:3.0.9'
 
+    // === Tests ===
     testImplementation 'junit:junit:4.12'
 }
 
@@ -108,7 +128,7 @@ task dockerBuild(type: Exec) {
     dependsOn installDist
     group = 'docker'
     description = 'Builds the Docker image for declaratii-anaf'
-    
+
     commandLine 'docker', 'build', '-t', 'declaratii-anaf', '.'
 }
 
@@ -116,6 +136,6 @@ task dockerRun(type: Exec) {
     dependsOn dockerBuild
     group = 'docker'
     description = 'Runs the declaratii-anaf Docker container'
-    
+
     commandLine 'docker', 'compose', 'up', '-d'
 }

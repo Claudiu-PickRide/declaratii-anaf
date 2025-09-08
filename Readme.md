@@ -1,31 +1,66 @@
-# Descriere
+# PickRide PDF generator
+
+## How to generate PDFs
+
+- HTTP METHOD: `POST`
+- DEFAULT PATH WHEN TESTING LOCALLY: `localhost:5000/upload?sync=true`
+- REQUEST BODY
+  - type: `form-data`
+  - keys:
+    - `userId`:`insert pickride user_id here`
+    - `decName`: can be `d100`,`d301`,`d390`
+    - `file`: actual XML file
+
+## How to get PDFs
+- use Azure CDN to explore files at `/declarations/{year}/{month}`
+- not needed on the server side as we can use their client and batch download all
+
+## How to generate all for a year and month combo
+- HTTP METHOD: 'GET'
+- DEFAULT PATH WHEN TESTING LOCALLY: `localhost:5000/sync_all/{year}/{month}`
+
+
+## Requirements
+- Java version: 23
+- Gradle: 8.10
+
+## Environment variables needed
+- `DB_URL`
+- `DB_USER`
+- `DB_PASS`
+- `AZURE_STORAGE_CONN`
+- `AZURE_STORAGE_ACCOUNT`
+- `AZURE_STORAGE_CONTAINER`
+
+# Declaratii ANAF imported library
+## Descriere
 
 Acest proiect este o variantă **NEOFICIALA** a softului J de depus declarații de pe [site-ul ANAF](https://www.anaf.ro/anaf/internet/ANAF/servicii_online/declaratii_electronice/descarcare_declaratii). 
 Librariile sunt descarcate de pe site-ul ANAF. Proiectul utilizează **gradle** ca mecanism de build. 
 Proiectul este menținut de [Incremental Community](http://incrementalcommunity.ro).
 
-# Arhitectura
+## Arhitectura
 
 ![Arhitectura](schema.png)
 
 
-# De ce e nevoie de acest soft ?
+## De ce e nevoie de acest soft ?
 
 Pentru creearea programatica a declaratiilor dupa ce xml-ul a fost generat. DUKIntegrator este disponibil doar in mod GUI si doar pentru windows.
 
-# Sursele
+## Sursele
 
 * DUKIntegrator - [Site-ul ANAF](https://www.anaf.ro/anaf/internet/ANAF/servicii_online/declaratii_electronice/descarcare_declaratii)
 * Lista librăriilor de validare/creeare pdf pentru fiecare declaratie sunt disponibile [aici](https://static.anaf.ro/static/10/Anaf/update5/versiuni.xml)
 * Wrapper pentru validatoare creat de comunitate
 
-# Build
+## Build
 
 Proiectul foloseste gradle ca mecanism de build și este structurat în două module:
 - `api` - Serviciul REST pentru validare și generare PDF
 - `gui` (în directorul DUKIntegrator) - Interfața grafică pentru validare și semnare
 
-## Opțiuni de build
+### Opțiuni de build
 
 Din directorul rădăcină, puteți rula:
 ```bash
@@ -42,7 +77,7 @@ Din directorul rădăcină, puteți rula:
 ./gradlew installDist
 ```
 
-## Rulare API din linia de comandă
+### Rulare API din linia de comandă
 
 Pentru a rula API-ul fără Docker:
 ```bash
@@ -55,7 +90,7 @@ cd api/build/install/api/bin
 api.bat  # pe Windows
 ```
 
-## Rulare GUI din linia de comandă
+### Rulare GUI din linia de comandă
 
 Pentru a rula interfața grafică:
 ```bash
@@ -68,7 +103,7 @@ cd DUKIntegrator/build/install/gui/bin
 gui.bat  # pe Windows
 ```
 
-## Update al librariilor de pe site-ul ANAF
+### Update al librariilor de pe site-ul ANAF
 
 ```bash
 ./gradlew -q updateFromANAF
@@ -78,7 +113,7 @@ git commit -m "Update librarii validare"
 
 Librariile descărcate în directorul `lib` sunt disponibile automat pentru ambele module.
 
-# Start with docker
+## Start with docker
  
 ```bash
 # Build and run in one command
@@ -91,34 +126,34 @@ docker compose up -d
  
 Click: http://localhost:8080
 
-## Requirements
+### Requirements
 
  * Java 17
  * git
 
-# Licența
+## Licența
 
 Deoarece iText-5.0.4 este folosit la DUKIntegrator și la librăriile de validare, licența codului trebuie să fie AGPL. O copie a licenței în engleză se află în fișierul LICENSE.
 
-# Dezvoltare GUI
+## Dezvoltare GUI
 
 Pentru modificări ale interfeței grafice din modulul `gui` (DUKIntegrator), este recomandat să folosiți Apache NetBeans IDE. Acesta oferă un editor vizual pentru interfețe Swing și gestionează automat codul generat.
 
-## Configurare NetBeans
+### Configurare NetBeans
 
 1. Descărcați și instalați [Apache NetBeans](https://netbeans.apache.org/front/main/download/)
 2. Deschideți proiectul în NetBeans folosind "Open Project" și selectând directorul rădăcină
 3. Expandați modulul `gui` din Projects
 4. Fișierele de interfață (.java) pot fi deschise în modul Design pentru editare vizuală
 
-# Cum pot să ajut ?
+## Cum pot să ajut ?
 
 [Registrul problemelor este aici](https://github.com/IncrementalDevelopment/declaratii-anaf/issues)
 
 * Poți să faci o propunere de îmbunătățire 
 * Poți să rezolvi o problemă și să faci un pull request
 
-# Exemplu validare/generare utilizand API
+## Exemplu validare/generare utilizand API
 
 ```
 # build
@@ -142,7 +177,7 @@ curl http://localhost:5001/download/f1a355c1
 
 ```
 
-# Exemplu validare/generare din java
+## Exemplu validare/generare din java
 
 ```
     private Result validateXmlDecl(String declName) throws IOException {
@@ -153,7 +188,7 @@ curl http://localhost:5001/download/f1a355c1
     }
 ```
 
-# Lista declaratiilor care pot fi validate/generate
+## Lista declaratiilor care pot fi validate/generate
 
 ```
 A4200

@@ -12,13 +12,10 @@ import pdf.PdfCreation;
 
 import java.io.*;
 import java.nio.charset.Charset;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
-/**
- * Created by Alex Proca <alex.proca@gmail.com> on 14/04/16.
- */
 
 @SuppressWarnings("unchecked")
 public class Result {
@@ -128,7 +125,7 @@ public class Result {
                 .toString();
     }
 
-
+    @Deprecated
     public static Result generateFromXMLStream(InputStream xmlStream, String declName) throws IOException {
 
         // Convert InputStream to String
@@ -145,6 +142,7 @@ public class Result {
 
     }
 
+    @Deprecated
     public static Result generateFromXMLString(String xml, String declName) {
         try {
             File tempDir = Files.createTempDir();

@@ -4,6 +4,7 @@ package ro.incremental.anaf.declaratii;
  * Created by Alex Proca <alex.proca@gmail.com> on 18/03/16.
  */
 
+import eu.pickride.model.GenerateMonthlyPDFsDTO;
 import org.json.JSONObject;
 
 import jakarta.ws.rs.*;
@@ -74,7 +75,7 @@ public class ValidateWebService {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response available(JSONObject input) {
 
-        Result result = Result.generateFromXMLString(json2Xml(input), getDeclName(input));
+        Result result = ResultWithDate.generateFullFromXMLString(json2Xml(input), getDeclName(input)).result;
 
         if (result.getHashCode() != null) {
             Result.cacheResult(result);
@@ -91,6 +92,7 @@ public class ValidateWebService {
         @FormDataParam("file") InputStream uploadedInputStream,
         @FormDataParam("file") FormDataContentDisposition fileDetail,
         @FormDataParam("decName") String decName,
+        @FormDataParam("userId") String userId,
         @QueryParam("sync") @DefaultValue("false") boolean sync) {
 
         if (uploadedInputStream == null || fileDetail == null || decName == null || decName.isEmpty()) {
@@ -101,14 +103,17 @@ public class ValidateWebService {
         }
 
         try {
+            String fileName = fileDetail.getFileName();
+            String newFileName = fileName.replace(".xml",".pdf");
             String lowerCaseDecName = decName.toLowerCase();
-            Result result = Result.generateFromXMLStream(uploadedInputStream, lowerCaseDecName);
+            ResultWithDate fullResult = ResultWithDate.generateFullFromXMLStream(uploadedInputStream, lowerCaseDecName);
+            Result result = fullResult.result;
 
             if (sync) {
                 if (result.getHashCode() != null) {
                     // Send the resulting file as response body
                     Response.ResponseBuilder response = Response.ok(result.pdfFile);
-                    response.header("Content-Disposition", "attachment; filename=\"" + result.decName + ".pdf\"");
+                    response.header("Content-Disposition", "attachment; filename=\"" + newFileName + "\"");
                     response.header("X-Validation-Message", result.message);
                     return response.build();
                 } else {
@@ -137,6 +142,75 @@ public class ValidateWebService {
                            .build();
         }
     }
+
+    @GET
+    @Path("/generate_pdfs/{year}/{month}")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response generatePdfs(
+            @PathParam("year") int year,
+            @PathParam("month") int month) {
+
+        // Build DTO like in Go
+        GenerateMonthlyPDFsDTO dto = new GenerateMonthlyPDFsDTO(year, month);
+        try {
+            dto.validate();
+        } catch (IllegalArgumentException e) {
+            Result result = new Result(e.getMessage(), -9);
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity(result.toJSON())
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+        }
+
+        if (uploadedInputStream == null || fileDetail == null || decName == null || decName.isEmpty()) {
+            // Return JSON error response with 400 status
+            String errorMessage = "No file uploaded or missing declaration name";
+            Result result = new Result(errorMessage, -9);
+            return Response.ok(result.toJSON(), MediaType.APPLICATION_JSON).build();
+        }
+
+        try {
+            String fileName = fileDetail.getFileName();
+            String newFileName = fileName.replace(".xml",".pdf");
+            String lowerCaseDecName = decName.toLowerCase();
+            ResultWithDate fullResult = ResultWithDate.generateFullFromXMLStream(uploadedInputStream, lowerCaseDecName);
+            Result result = fullResult.result;
+
+            if (sync) {
+                if (result.getHashCode() != null) {
+                    // Send the resulting file as response body
+                    Response.ResponseBuilder response = Response.ok(result.pdfFile);
+                    response.header("Content-Disposition", "attachment; filename=\"" + newFileName + "\"");
+                    response.header("X-Validation-Message", result.message);
+                    return response.build();
+                } else {
+                    // Send error response
+                    return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                            .entity(result.toJSON())
+                            .type(MediaType.APPLICATION_JSON)
+                            .build();
+                }
+            } else {
+                if (result.getHashCode() != null) {
+                    Result.cacheResult(result);
+                }
+                // Return JSON response with result data
+                return Response.ok(result.toJSON(), MediaType.APPLICATION_JSON)
+                        .header("X-Validation-Message", result.message)
+                        .build();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Result result = new Result(e.getMessage(), -9);
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(result.toJSON())
+                    .type(MediaType.APPLICATION_JSON)
+                    .build();
+        }
+    }
+
 
     private static String json2Xml(JSONObject input) {
         return "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + org.json.JSONML.toString(input);

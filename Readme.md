@@ -8,11 +8,12 @@
   - type: `form-data`
   - keys:
     - `userId`:`insert pickride user_id here`
-    - `decName`: can be `d100`,`d301`,`d390`
+    - `decName`: can be `d100`,`d301`,`d390`,`d710` (rectified `d100`)
     - `file`: actual XML file
 
 ## How to get PDFs
-- use Azure CDN to explore files at `/declarations/{year}/{month}`
+- use Azure CDN to explore files at `/{user_id}/anaf/{year}/{month}/{numele fisierului}`
+  - where `{numele_fisierului}` is `{year}_{month}_{declaration_number}.pdf`
 - not needed on the server side as we can use their client and batch download all
 
 ## How to generate all for a year and month combo

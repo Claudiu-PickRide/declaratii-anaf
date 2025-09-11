@@ -1,4 +1,4 @@
-package eu.pickride.db;
+package eu.pickride.db.model;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -46,6 +46,9 @@ public class PdfDocumentDataModel {
 
     @Column(name = "validation_error")
     private String validationError;
+
+    @Column(name = "rectified")
+    private boolean rectified;
 
     // --- Getters and Setters ---
 
@@ -120,5 +123,15 @@ public class PdfDocumentDataModel {
     public void setValidationError(String validationError) {
         this.validationError = validationError;
     }
+
+    public void setRectified(boolean rectified) {
+        this.rectified = rectified;
+    }
+
+    public boolean getRectified(boolean rectified) {
+        return rectified;
+    }
+
+
 }
 

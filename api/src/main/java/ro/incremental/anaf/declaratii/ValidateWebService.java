@@ -4,7 +4,6 @@ package ro.incremental.anaf.declaratii;
  * Created by Alex Proca <alex.proca@gmail.com> on 18/03/16.
  */
 
-import eu.pickride.model.GenerateMonthlyPDFsDTO;
 import org.json.JSONObject;
 
 import jakarta.ws.rs.*;
@@ -15,8 +14,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import org.glassfish.jersey.media.multipart.*;
-import java.io.*;
-import com.google.common.io.Files;
 
 @Path("/")
 public class ValidateWebService {
@@ -70,21 +67,6 @@ public class ValidateWebService {
     }
 
     @POST
-    @Path("/validate")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response available(JSONObject input) {
-
-        Result result = ResultWithDate.generateFullFromXMLString(json2Xml(input), getDeclName(input)).result;
-
-        if (result.getHashCode() != null) {
-            Result.cacheResult(result);
-        }
-
-        return Response.ok(result.toJSON(), MediaType.APPLICATION_JSON).build();
-    }
-
-    @POST
     @Path("/upload")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
@@ -93,27 +75,73 @@ public class ValidateWebService {
         @FormDataParam("file") FormDataContentDisposition fileDetail,
         @FormDataParam("decName") String decName,
         @FormDataParam("userId") String userId,
+        @FormDataParam("rectified") String rectified,
         @QueryParam("sync") @DefaultValue("false") boolean sync) {
 
-        if (uploadedInputStream == null || fileDetail == null || decName == null || decName.isEmpty()) {
-            // Return JSON error response with 400 status
-            String errorMessage = "No file uploaded or missing declaration name";
-            Result result = new Result(errorMessage, -9);
-            return Response.ok(result.toJSON(), MediaType.APPLICATION_JSON).build();
-        }
+        boolean rectifiedBool = false;
+        // region checking all parameters and file, return 400 if data is missing or incorrect
+            if(rectified == null || rectified.isEmpty()){
+                // Return JSON error response with 400 status
+                String errorMessage = "'rectified' parameter not found or empty";
+                Result result = new Result(errorMessage, -9);
+                return Response.ok(result.toJSON(), MediaType.APPLICATION_JSON).build();
+
+            } else {
+                try{
+                    rectifiedBool = Boolean.parseBoolean(rectified);
+                } catch (Exception ex) {
+                    String errorMessage = "'rectified' parameter must be true or false";
+                    Result result = new Result(errorMessage, -9);
+                    return Response.ok(result.toJSON(), MediaType.APPLICATION_JSON).build();
+                }
+            }
+
+            if (userId == null || userId.isEmpty()) {
+                // Return JSON error response with 400 status
+                String errorMessage = "'userId' parameter not found or empty";
+                Result result = new Result(errorMessage, -9);
+                return Response.ok(result.toJSON(), MediaType.APPLICATION_JSON).build();
+            }
+
+            if (decName == null || decName.isEmpty()) {
+                // Return JSON error response with 400 status
+                String errorMessage = "'decName' parameter not found or empty";
+                Result result = new Result(errorMessage, -9);
+                return Response.ok(result.toJSON(), MediaType.APPLICATION_JSON).build();
+            }
+
+            if (uploadedInputStream == null || fileDetail == null) {
+                // Return JSON error response with 400 status
+                String errorMessage = "No file uploaded";
+                Result result = new Result(errorMessage, -9);
+                return Response.ok(result.toJSON(), MediaType.APPLICATION_JSON).build();
+            }
+        // endregion
 
         try {
             String fileName = fileDetail.getFileName();
             String newFileName = fileName.replace(".xml",".pdf");
             String lowerCaseDecName = decName.toLowerCase();
-            ResultWithDate fullResult = ResultWithDate.generateFullFromXMLStream(uploadedInputStream, lowerCaseDecName);
+            ResultWithDate fullResult = ResultWithDate.generateFullFromXMLStream(
+                    uploadedInputStream,
+                    lowerCaseDecName,
+                    userId,
+                    rectifiedBool);
+
+            String declarationNameProcessed = decName;
+            if(decName.equals("d710")) {
+                declarationNameProcessed = "d100_rectified";
+            }
+            String newFileNameAlt = String.format("%s_%s_%s.pdf", fullResult.year, fullResult.month, declarationNameProcessed);
+            String fullPath = String.format("%s/anaf/%s/%s/%s",userId, fullResult.year, fullResult.month, newFileNameAlt);
+
             Result result = fullResult.result;
 
             if (sync) {
                 if (result.getHashCode() != null) {
                     // Send the resulting file as response body
                     Response.ResponseBuilder response = Response.ok(result.pdfFile);
-                    response.header("Content-Disposition", "attachment; filename=\"" + newFileName + "\"");
+                    response.header("Content-Disposition", "attachment; filename=\"" + newFileNameAlt + "\"");
                     response.header("X-Validation-Message", result.message);
                     return response.build();
                 } else {
@@ -141,83 +169,6 @@ public class ValidateWebService {
                            .type(MediaType.APPLICATION_JSON)
                            .build();
         }
-    }
-
-    @GET
-    @Path("/generate_pdfs/{year}/{month}")
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response generatePdfs(
-            @PathParam("year") int year,
-            @PathParam("month") int month) {
-
-        // Build DTO like in Go
-        GenerateMonthlyPDFsDTO dto = new GenerateMonthlyPDFsDTO(year, month);
-        try {
-            dto.validate();
-        } catch (IllegalArgumentException e) {
-            Result result = new Result(e.getMessage(), -9);
-            return Response.status(Response.Status.BAD_REQUEST)
-                    .entity(result.toJSON())
-                    .type(MediaType.APPLICATION_JSON)
-                    .build();
-        }
-
-        if (uploadedInputStream == null || fileDetail == null || decName == null || decName.isEmpty()) {
-            // Return JSON error response with 400 status
-            String errorMessage = "No file uploaded or missing declaration name";
-            Result result = new Result(errorMessage, -9);
-            return Response.ok(result.toJSON(), MediaType.APPLICATION_JSON).build();
-        }
-
-        try {
-            String fileName = fileDetail.getFileName();
-            String newFileName = fileName.replace(".xml",".pdf");
-            String lowerCaseDecName = decName.toLowerCase();
-            ResultWithDate fullResult = ResultWithDate.generateFullFromXMLStream(uploadedInputStream, lowerCaseDecName);
-            Result result = fullResult.result;
-
-            if (sync) {
-                if (result.getHashCode() != null) {
-                    // Send the resulting file as response body
-                    Response.ResponseBuilder response = Response.ok(result.pdfFile);
-                    response.header("Content-Disposition", "attachment; filename=\"" + newFileName + "\"");
-                    response.header("X-Validation-Message", result.message);
-                    return response.build();
-                } else {
-                    // Send error response
-                    return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                            .entity(result.toJSON())
-                            .type(MediaType.APPLICATION_JSON)
-                            .build();
-                }
-            } else {
-                if (result.getHashCode() != null) {
-                    Result.cacheResult(result);
-                }
-                // Return JSON response with result data
-                return Response.ok(result.toJSON(), MediaType.APPLICATION_JSON)
-                        .header("X-Validation-Message", result.message)
-                        .build();
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            Result result = new Result(e.getMessage(), -9);
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(result.toJSON())
-                    .type(MediaType.APPLICATION_JSON)
-                    .build();
-        }
-    }
-
-
-    private static String json2Xml(JSONObject input) {
-        return "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + org.json.JSONML.toString(input);
-    }
-
-    private static String getDeclName(JSONObject input) {
-        return input.getString("tagName").replace("declaratie", "d");
     }
 
     private static String cacheResource(String resource) {

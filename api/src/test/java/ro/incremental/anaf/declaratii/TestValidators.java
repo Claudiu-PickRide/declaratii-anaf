@@ -47,11 +47,11 @@ public class TestValidators {
         return Result.generateFromXMLString(fileToString(xmlFile), declName);
     }
 
-    private Result validateXmlDeclWithDate(String declName) throws IOException {
+    private Result validateXmlDeclWithDate(String declName, String userId, boolean rectifiedBool) throws IOException {
 
         File xmlFile = new File("examples", declName + ".xml");
 
-        return ResultWithDate.generateFullFromXMLString(fileToString(xmlFile), declName).result;
+        return ResultWithDate.generateFullFromXMLString(fileToString(xmlFile), declName, userId, rectifiedBool).result;
     }
 
     private String fileToString(File file) throws IOException {

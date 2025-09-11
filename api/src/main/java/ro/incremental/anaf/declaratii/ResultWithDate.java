@@ -1,6 +1,7 @@
 package ro.incremental.anaf.declaratii;
 
 import com.google.common.io.Files;
+import eu.pickride.utils.FormattingUtils;
 
 import java.io.*;
 import java.nio.charset.Charset;
@@ -19,14 +20,18 @@ public class ResultWithDate {
     public ResultWithDate(
             Result result,
             int month,
-            int year
-    ) {
+            int year,
+            String userId, boolean rectifiedBool) {
         this.result = result;
         this.month = month;
         this.year = year;
     }
 
-    public static ResultWithDate generateFullFromXMLStream(InputStream xmlStream, String declName) throws IOException {
+    public static ResultWithDate generateFullFromXMLStream(
+            InputStream xmlStream,
+            String declName,
+            String userId,
+            boolean rectifiedBool) throws IOException {
 
         // Convert InputStream to String
         StringBuilder xmlStringBuilder = new StringBuilder();
@@ -36,13 +41,17 @@ public class ResultWithDate {
             xmlStringBuilder.append(line).append(System.lineSeparator());
         }
         String xmlString = xmlStringBuilder.toString();
-
+        xmlString = FormattingUtils.replaceRomanianDiacritics(xmlString);
         // Delegate to generateFromXMLString
-        return generateFullFromXMLString(xmlString, declName);
+        return generateFullFromXMLString(xmlString, declName, userId, rectifiedBool);
 
     }
 
-    public static ResultWithDate generateFullFromXMLString(String xml, String declName) {
+    public static ResultWithDate generateFullFromXMLString(
+            String xml,
+            String declName,
+            String userId,
+            boolean rectifiedBool) {
         try {
             File tempDir = Files.createTempDir();
             File xmlFile = new File(tempDir, declName + ".xml");
@@ -70,7 +79,9 @@ public class ResultWithDate {
             return new ResultWithDate(
                     Result.generatePdfFromXMLFile(xmlFile.getAbsolutePath(), declName),
                     luna,
-                    an
+                    an,
+                    userId,
+                    rectifiedBool
             );
 
         } catch (Throwable e) {
@@ -78,8 +89,8 @@ public class ResultWithDate {
             return new ResultWithDate(
                     new Result(e.getMessage(), UNKNOWN_ERROR),
                     -1,
-                    -1
-            );
+                    -1,
+                    userId, rectifiedBool);
         }
     }
 }

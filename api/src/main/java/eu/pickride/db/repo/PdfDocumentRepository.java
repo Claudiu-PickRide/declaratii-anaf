@@ -1,5 +1,7 @@
-package eu.pickride.db;
+package eu.pickride.db.repo;
 
+import eu.pickride.db.HibernateUtil;
+import eu.pickride.db.model.PdfDocumentDataModel;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 

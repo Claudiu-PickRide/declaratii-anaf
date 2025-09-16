@@ -76,6 +76,10 @@ public class ResultWithDate {
                     System.out.printf("An %d", an);
                 }
             }
+            // if we're getting a rectified d100, it must be a d710
+            if(rectifiedBool && declName.equals("d100")) {
+                declName = "d710";
+            }
             return new ResultWithDate(
                     Result.generatePdfFromXMLFile(xmlFile.getAbsolutePath(), declName),
                     luna,

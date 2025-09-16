@@ -3,10 +3,11 @@ package eu.pickride.cdn;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.*;
 import com.azure.storage.blob.models.*;
+
 import java.io.*;
 
 /**
- * Utility for uploading files to Azure Blob Storage (backed by Azure CDN).
+ * Utility for working with Azure Blob Storage (backed by Azure CDN).
  */
 public class AzureBlobUtil {
 
@@ -58,6 +59,27 @@ public class AzureBlobUtil {
     }
 
     /**
+     * Uploads arbitrary data from an InputStream (e.g., generated PDF in-memory).
+     */
+    public static String uploadStream(InputStream inputStream, long length, String blobPath) {
+        BlobClient blobClient = containerClient.getBlobClient(blobPath);
+        blobClient.upload(inputStream, length, true);
+        return blobClient.getBlobUrl();
+    }
+
+    /**
+     * Downloads a blob and returns its InputStream.
+     * Caller is responsible for closing the stream.
+     */
+    public static InputStream downloadFile(String blobPath) {
+        BlobClient blobClient = containerClient.getBlobClient(blobPath);
+        if (!blobClient.exists()) {
+            throw new IllegalArgumentException("Blob does not exist: " + blobPath);
+        }
+        return blobClient.openInputStream();
+    }
+
+    /**
      * Deletes a blob from the container.
      */
     public static void deleteFile(String blobPath) {
@@ -65,4 +87,3 @@ public class AzureBlobUtil {
         blobClient.deleteIfExists();
     }
 }
-
